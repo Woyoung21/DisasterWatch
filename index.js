@@ -28,7 +28,12 @@ app.get("/", async (req, res) => {
 app.get("/events", async (req, res) => {
   const result = await db.query("select * from events;");
   console.log(JSON.stringify(result.rows));
-  res.render("events", { events: result.rows });
+
+  res.render("events", {
+    includeListener: true,
+    events: result.rows,
+    eventsHash: dbFunctions.transformEventsToHash(result.rows),
+  });
 });
 
 app.get("/users", async (req, res) => {

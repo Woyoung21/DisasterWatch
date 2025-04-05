@@ -213,6 +213,15 @@ async function getAllEvents() {
   const result = await db.query(query);
   return result.rows;
 }
+
+function transformEventsToHash(events) {
+  const eventMap = {};
+  events.forEach(({ id, ...rest }) => {
+    eventMap[id] = rest;
+  });
+  return eventMap;
+}
+
 module.exports = {
   insertUser,
   insertEvent,
@@ -225,4 +234,5 @@ module.exports = {
   getEventsByUserId,
   updateEvent,
   deleteEvent,
+  transformEventsToHash,
 };
