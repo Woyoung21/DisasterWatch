@@ -17,7 +17,7 @@ sed -i 's/CHANGE_THIS_PASS/new_password/' .env
 (Get-Content .env) -replace 'CHANGE_THIS_PASS', 'new_password' | Set-Content .env
 ``` 
 
-## instapp npm packages
+## install npm packages
 ```
 npm install
 ```
