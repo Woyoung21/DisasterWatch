@@ -3,12 +3,15 @@ const path = require("path");
 const app = express();
 const db = require("./db/client");
 const eventListener = require("./eventService");
+const dbFunctions = require("./db/functions");
 require("dotenv").config();
 
 app.use(express.json());
 
 // Serve static files from the public folder
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(express.urlencoded({ extended: true }));
 
 // Set up listener for database notifications
 const http = require("http");
@@ -36,6 +39,35 @@ app.get("/users", async (req, res) => {
 
 app.get("/listeners", async (req, res) => {
   res.render("listeners");
+});
+
+// POST route for adding an event
+app.post("/events", async (req, res) => {
+  try {
+    console.log("Received event data:", req.body);
+    const { id, users_id, lat, long, data, authority, severity } = req.body;
+    let parsedData = {};
+    if (data) {
+      try {
+        parsedData = JSON.parse(data);
+      } catch (err) {
+        return res.status(400).send("Invalid JSON in additional data.");
+      }
+    }
+    await dbFunctions.insertEvent({
+      id: Number(id),
+      users_id: Number(users_id),
+      lat: Number(lat),
+      long: Number(long),
+      data: parsedData,
+      authority,
+      severity,
+    });
+    res.redirect("/events");
+  } catch (error) {
+    console.error("Error inserting event:", error);
+    res.status(500).send("Server error.");
+  }
 });
 
 // Initialize WebSockets BEFORE starting the server

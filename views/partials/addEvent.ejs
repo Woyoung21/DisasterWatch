@@ -1,0 +1,65 @@
+<div class="container mt-5">
+  <h2>Add New Event</h2>
+  <form action="/events" method="POST">
+    <div class="mb-3">
+      <label for="id" class="form-label">Event ID</label>
+      <input type="number" class="form-control" id="id" name="id" required />
+    </div>
+    <div class="mb-3">
+      <label for="users_id" class="form-label">User ID</label>
+      <input
+        type="number"
+        class="form-control"
+        id="users_id"
+        name="users_id"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="lat" class="form-label">Latitude</label>
+      <input
+        type="number"
+        step="any"
+        class="form-control"
+        id="lat"
+        name="lat"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="long" class="form-label">Longitude</label>
+      <input
+        type="number"
+        step="any"
+        class="form-control"
+        id="long"
+        name="long"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="data" class="form-label">Additional Data (JSON)</label>
+      <textarea
+        class="form-control"
+        id="data"
+        name="data"
+        rows="3"
+        placeholder='{"description": "event description"}'
+      ></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="authority" class="form-label">Authority</label>
+      <input type="text" class="form-control" id="authority" name="authority" />
+    </div>
+    <div class="mb-3">
+      <label for="severity" class="form-label">Severity</label>
+      <select class="form-select" id="severity" name="severity">
+        <option value="">Select severity...</option>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Event</button>
+  </form>
+</div>

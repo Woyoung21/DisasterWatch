@@ -32,15 +32,15 @@ function initialize(server) {
     });
 
     // Send a test message after connection
-    setTimeout(() => {
-      const testMessage = {
-        type: "event_update",
-        operation: "TEST",
-        data: { message: "Test connection message" },
-      };
-      ws.send(JSON.stringify(testMessage));
-      debug.trackMessageSent(ws, testMessage);
-    }, 2000);
+    // setTimeout(() => {
+    //   const testMessage = {
+    //     type: "event_update",
+    //     operation: "TEST",
+    //     data: { message: "Test connection message" },
+    //   };
+    //   ws.send(JSON.stringify(testMessage));
+    //   debug.trackMessageSent(ws, testMessage);
+    // }, 2000);
   });
 
   // Initialize direct database listener connection
@@ -111,17 +111,17 @@ async function initDirectDbListener(wss) {
     console.log("👂 Now listening on events_channel");
 
     // For testing, send a notification 5 seconds after startup
-    setTimeout(async () => {
-      console.log("📤 Sending a test notification to database channel");
-      try {
-        await listenerClient.query(
-          'SELECT pg_notify(\'events_channel\', \'{"operation":"TEST","record":{"id":0,"message":"Direct server-generated test notification"}}\')'
-        );
-        console.log("✅ Test notification sent successfully");
-      } catch (err) {
-        console.error("❌ Failed to send test notification:", err);
-      }
-    }, 5000);
+    // setTimeout(async () => {
+    //   console.log("📤 Sending a test notification to database channel");
+    //   try {
+    //     await listenerClient.query(
+    //       'SELECT pg_notify(\'events_channel\', \'{"operation":"TEST","record":{"id":0,"message":"Direct server-generated test notification"}}\')'
+    //     );
+    //     console.log("✅ Test notification sent successfully");
+    //   } catch (err) {
+    //     console.error("❌ Failed to send test notification:", err);
+    //   }
+    // }, 5000);
 
     // Set up cleanup on process exit
     process.on("SIGINT", cleanup);
