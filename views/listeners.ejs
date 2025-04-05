@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebSocket Event Listener</title>
+    <style>
+      #event-log {
+        border: 1px solid #ccc;
+        padding: 10px;
+        height: 400px;
+        overflow-y: auto;
+        font-family: monospace;
+        margin-bottom: 20px;
+      }
+      .log-entry {
+        margin-bottom: 5px;
+        padding: 5px;
+        border-radius: 3px;
+      }
+      .log-system {
+        background-color: #f8f9fa;
+      }
+      .log-event {
+        background-color: #d1ecf1;
+      }
+      .log-error {
+        background-color: #f8d7da;
+      }
+      .log-connect {
+        background-color: #d4edda;
+      }
+      .log-close {
+        background-color: #fff3cd;
+      }
+
+      #status-indicator {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 3px;
+        margin-bottom: 20px;
+      }
+      .status-connected {
+        background-color: #28a745;
+        color: white;
+      }
+      .status-connecting {
+        background-color: #ffc107;
+        color: black;
+      }
+      .status-error {
+        background-color: #dc3545;
+        color: white;
+      }
+    </style>
+    <script src="/eventModels.js"></script>
+    <script src="/eventListener.js"></script>
+  </head>
+  <body>
+    <h1>WebSocket Event Listener</h1>
+
+    <div>
+      Connection Status: <span id="status-indicator">Initializing...</span>
+    </div>
+
+    <h3>Event Log</h3>
+    <div id="event-log"></div>
+
+    <div id="events-container"></div>
+
+    <script>
+      // UI Helper functions
+      function updateStatus(state, message) {
+        console.log(`[Status] ${state}: ${message}`);
+
+        const statusEl = document.getElementById("status-indicator");
+        statusEl.textContent = message;
+        statusEl.className = `status-${state}`;
+
+        // Also log to event log
+        addVisualLogEntry("system", `Status changed to: ${state} - ${message}`);
+      }
+
+      function addLogEntry(type, message, data) {
+        console.log(`[Log] ${type}: ${message}`, data || "");
+        addVisualLogEntry(type, message, data);
+      }
+
+      // Add entry to visual log on page
+      function addVisualLogEntry(type, message, data) {
+        const logEl = document.getElementById("event-log");
+        const entry = document.createElement("div");
+        entry.className = `log-entry log-${type}`;
+
+        const time = new Date().toLocaleTimeString();
+        let entryHtml = `<strong>[${time}] ${type}:</strong> ${message}`;
+
+        if (data) {
+          const dataStr =
+            typeof data === "object"
+              ? JSON.stringify(data, null, 2)
+              : String(data);
+          entryHtml += `<pre>${dataStr}</pre>`;
+        }
+
+        entry.innerHTML = entryHtml;
+        logEl.appendChild(entry);
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      // Add a visual indicator that the DOM is loaded
+      addVisualLogEntry("system", "DOM loaded, initializing EventService...");
+
+      // Add functions to handle events in the UI
+      function addEventToUI(record) {
+        addVisualLogEntry("system", `Adding event to UI: ${record.id}`);
+        // Actual implementation here
+      }
+
+      function updateEventInUI(record) {
+        addVisualLogEntry("system", `Updating event in UI: ${record.id}`);
+        // Actual implementation here
+      }
+
+      function removeEventFromUI(recordId) {
+        addVisualLogEntry("system", `Removing event from UI: ${recordId}`);
+        // Actual implementation here
+      }
+
+      // Application initialization
+      document.addEventListener("DOMContentLoaded", () => {
+        addVisualLogEntry("system", "Creating EventService instance...");
+
+        const eventService = new EventService();
+        addVisualLogEntry(
+          "system",
+          "EventService created, setting up handlers..."
+        );
+
+        // Set up event handlers
+        eventService.setHandler("connect", () => {
+          addVisualLogEntry("system", "onConnect handler executed");
+          updateStatus("connected", "Connected to WebSocket server");
+        });
+
+        eventService.setHandler("event", (data) => {
+          addVisualLogEntry("system", "onEvent handler executed", data);
+          addLogEntry("event", `Event ${data.operation}:`, data.record);
+
+          if (data.operation === "INSERT") {
+            addEventToUI(data.record);
+          } else if (data.operation === "UPDATE") {
+            updateEventInUI(data.record);
+          } else if (data.operation === "DELETE") {
+            removeEventFromUI(data.record.id);
+          } else if (data.operation === "TEST") {
+            addLogEntry("test", "Test event received", data.record);
+          }
+        });
+
+        eventService.setHandler("error", (error) => {
+          addVisualLogEntry("system", "onError handler executed", error);
+          updateStatus("error", `Error: ${error.message || "Unknown error"}`);
+        });
+
+        eventService.setHandler("message", (event) => {
+          addVisualLogEntry("system", "onMessage handler executed", event);
+
+          if (typeof event === "object" && event.type) {
+            addLogEntry(event.type, event.message, event.data);
+          } else {
+            addLogEntry("raw", "Raw message:", event);
+          }
+        });
+
+        eventService.setHandler("close", () => {
+          addVisualLogEntry("system", "onClose handler executed");
+          updateStatus(
+            "connecting",
+            "Disconnected. Attempting to reconnect..."
+          );
+        });
+
+        // Clean up when leaving the page
+        window.addEventListener("beforeunload", () => {
+          eventService.close();
+        });
+
+        addVisualLogEntry(
+          "system",
+          "All handlers set up, waiting for events..."
+        );
+      });
+    </script>
+  </body>
+</html>
