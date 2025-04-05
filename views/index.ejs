@@ -1,37 +1,9 @@
 <%- include("header") %>
 
 <div class="container mt-5">
-  <h1>Events Listing</h1>
-  <% if (events && events.length > 0) { %>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Description</th>
-        <th>Authority</th>
-        <th>Severity</th>
-        <th>Latitude</th>
-        <th>Longitude</th>
-        <th>Time Created</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% events.forEach(event => { %>
-      <tr>
-        <td><%= event.id %></td>
-        <td><%= event.data.description %></td>
-        <td><%= event.authority %></td>
-        <td><%= event.severity %></td>
-        <td><%= event.lat %></td>
-        <td><%= event.long %></td>
-        <td><%= event.time_created %></td>
-      </tr>
-      <% }) %>
-    </tbody>
-  </table>
-  <% } else { %>
-  <p>No events found.</p>
-  <% } %>
+  <h1>Main Page</h1>
+  <a href="/events" class="btn btn-primary">View Events</a>
+  <a href="/users" class="btn btn-secondary">View Users</a>
 </div>
 
 <%- include("footer") %>

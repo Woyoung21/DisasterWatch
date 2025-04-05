@@ -1,0 +1,111 @@
+<%- include("header") %>
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="display-5">
+        <i class="fas fa-users me-2"></i>Users Management
+      </h1>
+      <p class="lead text-muted">View and manage system users</p>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-search"></i></span>
+        <input
+          type="text"
+          id="searchInput"
+          class="form-control"
+          placeholder="Search users..."
+        />
+      </div>
+    </div>
+    <div class="col-md-6 text-md-end mt-2 mt-md-0">
+      <button class="btn btn-primary">
+        <i class="fas fa-plus me-1"></i> Add New User
+      </button>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover" id="usersTable">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if(users && users.length > 0) { %> <% users.forEach(user => { %>
+            <tr>
+              <td><%= user.id %></td>
+              <td><%= user.name %></td>
+              <td>
+                <% if(user.type === 'user') { %>
+                <span class="badge bg-primary">User</span>
+                <% } else if(user.type === 'authority') { %>
+                <span class="badge bg-danger">Authority</span>
+                <% } %>
+              </td>
+              <td><%= new Date(user.create_time).toLocaleString() %></td>
+              <td>
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-secondary">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-outline-danger">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <% }); %> <% } else { %>
+            <tr>
+              <td colspan="5" class="text-center">No users found</td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted"
+        >Total users: <%= users ? users.length : 0 %></small
+      >
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Simple search functionality -->
+<script>
+  document.getElementById("searchInput").addEventListener("keyup", function () {
+    const searchText = this.value.toLowerCase();
+    const table = document.getElementById("usersTable");
+    const rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      const cells = row.getElementsByTagName("td");
+      let found = false;
+
+      for (let j = 0; j < cells.length; j++) {
+        if (cells[j].textContent.toLowerCase().indexOf(searchText) > -1) {
+          found = true;
+          break;
+        }
+      }
+
+      row.style.display = found ? "" : "none";
+    }
+  });
+</script>
+<%- include("footer") %>

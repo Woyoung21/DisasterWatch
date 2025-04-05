@@ -34,4 +34,5 @@ see [cli.readme.md](https://github.com/John-Tsiglieris/SF-hacks-2025-secret-repo
 # TODO
 - ~~create static file serve~~
 - ~~set up templating:~~ See `views` folder
+- update nav
 - find a way to stream events (websockets?)

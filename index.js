@@ -15,11 +15,23 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.get("/", async (req, res) => {
+  // Render the 'index' template
+  res.render("index");
+});
+
+app.get("/events", async (req, res) => {
   const result = await db.query("select * from events;");
   // Render the 'index' template and pass data to it
   console.log(JSON.stringify(result.rows));
-  res.render("index", { events: result.rows });
+  res.render("events", { events: result.rows });
   // res.send(result.rows[0]);
+});
+
+app.get("/users", async (req, res) => {
+  const result = await db.query("select * from users;");
+
+  console.log(JSON.stringify(result.rows));
+  res.render("users", { users: result.rows });
 });
 
 const PORT = process.env.PORT || 3000;
