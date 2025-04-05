@@ -26,3 +26,8 @@ npm install
 ```
 npm run dev
 ```
+
+# TODO
+- ~~create static file serve~~
+- set up templating
+- find a way to stream events (websockets?)
