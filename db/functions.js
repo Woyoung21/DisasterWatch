@@ -204,7 +204,15 @@ async function deleteEvent(id) {
   const params = [id];
   return db.query(query, params);
 }
-
+/**
+ * Get all events.
+ * @returns {Promise<Array>} Array of event objects.
+ */
+async function getAllEvents() {
+  const query = `SELECT * FROM events`;
+  const result = await db.query(query);
+  return result.rows;
+}
 module.exports = {
   insertUser,
   insertEvent,
@@ -212,6 +220,7 @@ module.exports = {
   getAllUsers,
   updateUser,
   deleteUser,
+  getAllEvents,
   getEventById,
   getEventsByUserId,
   updateEvent,

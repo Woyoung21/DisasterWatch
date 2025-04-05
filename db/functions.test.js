@@ -10,6 +10,7 @@ const {
   getEventsByUserId,
   updateEvent,
   deleteEvent,
+  getAllEvents,
 } = require("./functions");
 const { seedData } = require("./seedData");
 
@@ -204,5 +205,47 @@ describe("Database Inserts and Management", () => {
     await deleteEvent(event.id);
     const deletedEvent = await getEventById(event.id);
     expect(deletedEvent).toBeUndefined();
+  });
+
+  test("getAllEvents returns all inserted events", async () => {
+    const user = { id: 12, type: "user", name: "Hannah" };
+    await insertUser(user);
+    const events = [
+      {
+        id: 600,
+        users_id: user.id,
+        lat: 40.73061,
+        long: -73.935242,
+        data: { description: "Conference" },
+        authority: "Organizer",
+        severity: "Medium",
+      },
+      {
+        id: 601,
+        users_id: user.id,
+        lat: 34.052235,
+        long: -118.243683,
+        data: { description: "Workshop" },
+        authority: "Admin",
+        severity: "Low",
+      },
+    ];
+    for (const event of events) {
+      await insertEvent(event);
+    }
+    const allEvents = await getAllEvents();
+    expect(allEvents.length).toBe(events.length);
+    expect(allEvents).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: events[0].id,
+          authority: events[0].authority,
+        }),
+        expect.objectContaining({
+          id: events[1].id,
+          authority: events[1].authority,
+        }),
+      ])
+    );
   });
 });
