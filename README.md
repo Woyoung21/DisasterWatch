@@ -29,5 +29,5 @@ npm run dev
 
 # TODO
 - ~~create static file serve~~
-- set up templating
+- ~~set up templating:~~ See `views` folder
 - find a way to stream events (websockets?)
