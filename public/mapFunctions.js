@@ -38,7 +38,10 @@ function addNewEvent(eventData) {
     .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}-${date
     .getFullYear()
     .toString()
-    .slice(-2)}`;
+    .slice(-2)} ${date.getHours().toString().padStart(2, "0")}:${date
+    .getMinutes()
+    .toString()
+    .padStart(2, "0")}`;
 
   // Get description
   const description =
@@ -73,7 +76,7 @@ function addNewEvent(eventData) {
   // Add severity badge if exists
   if (eventData.severity) {
     const severityBadge = document.createElement("span");
-    const badgeColor = eventData.severity === "High" ? "danger" : "warning";
+    const badgeColor = eventData.severity === "high" ? "danger" : "warning";
     severityBadge.className = `badge bg-${badgeColor}`;
     severityBadge.textContent = eventData.severity;
     listItem.appendChild(severityBadge);
