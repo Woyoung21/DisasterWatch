@@ -33,6 +33,10 @@ app.get("/userSettings", async (req, res) => {
   res.render("userSettings");
 });
 
+app.get("/dashboard", async (req, res) => {
+  res.render("dashboard");
+});
+
 app.get("/events", async (req, res) => {
   const result = await db.query("select * from events;");
 
