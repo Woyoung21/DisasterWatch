@@ -27,7 +27,6 @@ app.get("/", async (req, res) => {
 
 app.get("/events", async (req, res) => {
   const result = await db.query("select * from events;");
-  console.log(JSON.stringify(result.rows));
 
   res.render("events", {
     includeListener: true,
@@ -47,7 +46,7 @@ app.get("/listeners", async (req, res) => {
 });
 
 // POST route for adding an event
-app.post("/events", async (req, res) => {
+app.post("/api/events", async (req, res) => {
   try {
     console.log("Received event data:", req.body);
     const { id, users_id, lat, long, data, authority, severity } = req.body;

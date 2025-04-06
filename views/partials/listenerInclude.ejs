@@ -1,5 +1,6 @@
 <script src="/eventModels.js"></script>
 <script src="/eventListener.js"></script>
+<script src="/mapFunctions.js"></script>
 
 <script>
   const events = <%- JSON.stringify(events) %>;
@@ -19,10 +20,20 @@
       addLogEntry("event", `Event ${data.operation}:`, data.record);
 
       if (data.operation === "INSERT") {
-        console.log("***", data.record);
         const event = data.record;
         eventsHash[event.id] = event;
         events.push(event);
+
+        var map = L.map("map");
+
+        L.marker([37.7749, -122.4194])
+            .addTo(map)
+            .bindPopup("San Francisco")
+            .openPopup();
+
+
+        createMarker(map,[event.lat, event.long], `Event ID: ${event.id} <br>Authority: ${event.authority}<br>Severity: ${event.severity}`)
+
 
       } else if (data.operation === "UPDATE") {
         const event = eventsHash[data.record.id];
