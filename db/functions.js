@@ -246,6 +246,11 @@ async function getAllEvents() {
   return result.rows;
 }
 
+async function deleteAllEvent() {
+  const query = `DELETE FROM events`;
+  return db.query(query);
+}
+
 function transformEventsToHash(events) {
   const eventMap = {};
   events.forEach(({ id, ...rest }) => {
@@ -267,5 +272,6 @@ module.exports = {
   getEventsByUserId,
   updateEvent,
   deleteEvent,
+  deleteAllEvent,
   transformEventsToHash,
 };

@@ -116,7 +116,7 @@
           eventsHash[event.id] = event;
           events.push(event);
 
-          createMarker(map,[event.lat, event.long], `Event ID: ${event.id} <br>Authority: ${event.authority}<br>Severity: ${event.severity}`)
+          createMarker(map, event)
           const newEvent = {
             id: event.id,
             users_id: event.users_id,

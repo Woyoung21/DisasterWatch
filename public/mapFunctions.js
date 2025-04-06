@@ -122,7 +122,7 @@ function addNewEvent(eventData) {
   }
 
   const container = document.querySelector(".events-scroll-container");
-  container.scrollIntoView({ behavior: "smooth" });
-  container.scrollTop = container.scrollHeight;
+  // container.scrollIntoView({ behavior: "smooth" });
+  // container.scrollTop = container.scrollHeight;
   
 }
