@@ -21,12 +21,16 @@ const server = http.createServer(app);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+app.get("/", async (req, res) => {
+  res.render("index");
+});
+
 app.get("/aboutUs", async (req, res) => {
   res.render("aboutUs");
 });
 
-app.get("/", async (req, res) => {
-  res.render("index");
+app.get("/userSettings", async (req, res) => {
+  res.render("userSettings");
 });
 
 app.get("/events", async (req, res) => {

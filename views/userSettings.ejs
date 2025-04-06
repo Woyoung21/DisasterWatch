@@ -1,0 +1,314 @@
+<%- include("header") %>
+
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">User Settings</h1>
+    <div class="row">
+      <!-- LEFT COLUMN -->
+      <div class="col-md-6">
+        <!-- Profile -->
+        <div class="card mb-4">
+          <div class="card-header">Profile</div>
+          <div class="card-body">
+            <form>
+              <div class="mb-3">
+                <label for="profileAvatar" class="form-label">Avatar</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="profileAvatar"
+                  aria-describedby="avatarHelp"
+                />
+                <div id="avatarHelp" class="form-text">
+                  Choose a profile picture (icon, photo, etc.).
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="profileName" class="form-label">Display Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="profileName"
+                  placeholder="Enter your display name"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="profileEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="profileEmail"
+                  placeholder="Enter your email"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Save Profile
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="card mb-4">
+          <div class="card-header">Notifications</div>
+          <div class="card-body">
+            <form>
+              <div class="mb-3">
+                <label for="notificationPreference" class="form-label">
+                  Notification Preferences
+                </label>
+                <select class="form-select" id="notificationPreference">
+                  <option selected>Choose one...</option>
+                  <option value="email">Email Alerts</option>
+                  <option value="sms">SMS Alerts</option>
+                  <option value="push">Push Notifications</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="geoRegion" class="form-label">Geographic Region</label>
+                <select class="form-select" id="geoRegion">
+                  <option selected>Choose your region...</option>
+                  <option value="northamerica">North America</option>
+                  <option value="southamerica">South America</option>
+                  <option value="europe">Europe</option>
+                  <option value="asia">Asia</option>
+                  <option value="africa">Africa</option>
+                  <option value="oceania">Oceania</option>
+                </select>
+              </div>
+              <!-- Add the new city dropdown -->
+              <div class="mb-3">
+                <label for="city" class="form-label">City</label>
+                <select class="form-select" id="city" disabled>
+                  <option selected>First select a region...</option>
+                </select>
+              </div>
+              <button type="submit" id="submit-notifications" class="btn btn-primary">
+                Save Notifications
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- /LEFT COLUMN -->
+
+      <!-- RIGHT COLUMN -->
+      <div class="col-md-6">
+        <!-- Theme Toggle -->
+        <div class="card mb-4">
+          <div class="card-header">Theme</div>
+          <div class="card-body">
+            <form id="themeForm">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="theme" id="lightTheme" value="theme-light">
+                <label class="form-check-label" for="lightTheme">Light Theme</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="theme" id="darkTheme" value="theme-dark">
+                <label class="form-check-label" for="darkTheme">Dark Theme</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="theme" id="colorblindTheme" value="theme-colorblind">
+                <label class="form-check-label" for="colorblindTheme">Colorblind Theme</label>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Alert Types (using color + text/icon) -->
+        <div class="card mb-4">
+          <div class="card-header">Alert Types</div>
+          <div class="card-body">
+            <form>
+              <p>Select which alerts to receive. Each has a color-coded badge + text/icon:</p>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="disasterAlerts"
+                  checked
+                />
+                <label class="form-check-label" for="disasterAlerts">
+                  <span class="alert-badge badge-disaster">
+                    <span class="status-icon icon-triangle" aria-hidden="true"></span>
+                    Disaster
+                  </span>
+                  Alerts
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="weatherAlerts"
+                  checked
+                />
+                <label class="form-check-label" for="weatherAlerts">
+                  <span class="alert-badge badge-weather">
+                    <i class="bi bi-cloud-rain-fill" aria-hidden="true"></i>
+                    Weather
+                  </span>
+                  Alerts
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="generalUpdates"
+                />
+                <label class="form-check-label" for="generalUpdates">
+                  <span class="alert-badge badge-general">
+                    <i class="bi bi-bell-fill" aria-hidden="true"></i>
+                    General
+                  </span>
+                  Updates
+                </label>
+              </div>
+              <button type="submit" class="btn btn-primary mt-3">
+                Save Alert Preferences
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- /RIGHT COLUMN -->
+    </div>
+
+    <!-- Logout or Additional Account Actions -->
+    <div class="d-flex justify-content-end mt-4">
+      <button class="btn btn-danger">Log Out</button>
+    </div>
+  </div>
+
+  <script>
+    // THEME TOGGLE LOGIC
+    const body = document.body;
+    const themeRadios = document.querySelectorAll('input[name="themeOptions"]');
+
+    themeRadios.forEach((radio) => {
+      radio.addEventListener('change', function () {
+        // Remove existing theme classes
+        body.classList.remove('theme-light', 'theme-dark', 'theme-colorblind');
+
+        // Add the new theme class
+        if (this.id === 'lightTheme') {
+          body.classList.add('theme-light');
+        } else if (this.id === 'darkTheme') {
+          body.classList.add('theme-dark');
+        } else if (this.id === 'colorBlindTheme') {
+          body.classList.add('theme-colorblind');
+        }
+      });
+    });
+
+    // Add event listeners to theme selection buttons/controls and save it to local storage
+    document.querySelectorAll('[data-theme]').forEach(button => { // maybe make it just select the city element, no need to use querySelectorAll. What are you trying to iterate through?
+      button.addEventListener('click', () => {
+        const selectedTheme = button.dataset.theme; // 'theme-light', 'theme-dark', etc.
+        
+        // Save to localStorage
+        localStorage.setItem('preferredTheme', selectedTheme);
+        
+        // Apply theme immediately
+        document.body.classList.remove('theme-light', 'theme-dark', 'theme-colorblind');
+        document.body.classList.add(selectedTheme);
+      });
+    });
+
+    // Also load saved theme on userSettings page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const storedTheme = localStorage.getItem('preferredTheme');
+      if (storedTheme) {
+        document.body.classList.remove('theme-light', 'theme-dark', 'theme-colorblind');
+        document.body.classList.add(storedTheme);
+      }
+    });
+  </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Load current theme
+    const currentTheme = localStorage.getItem('preferredTheme') || 'theme-light';
+    document.body.classList.add(currentTheme);
+    
+    // Set radio button to match current theme
+    document.querySelector(`input[value="${currentTheme}"]`).checked = true;
+
+    // Add change listener to form
+    document.getElementById('themeForm').addEventListener('change', (e) => {
+      if (e.target.type === 'radio') {
+        const newTheme = e.target.value;
+        // Save to localStorage
+        localStorage.setItem('preferredTheme', newTheme);
+        // Apply theme
+        document.body.classList.remove('theme-light', 'theme-dark', 'theme-colorblind');
+        document.body.classList.add(newTheme);
+      }
+    });
+  });
+
+  document.getElementById('submit-notifications').addEventListener('click', () => {
+    let cityName = document.getElementById('submit-notifications').value;
+    localStorage.setItem('cityName', option);
+  });
+</script>
+<script>
+    // City data object
+    const cityData = {
+        northamerica: [
+            "New York", "Los Angeles", "Toronto", "Mexico City", "Chicago",
+            "San Francisco", "Vancouver", "Montreal", "Miami", "Seattle"
+        ],
+        southamerica: [
+            "São Paulo", "Buenos Aires", "Lima", "Bogotá", "Rio de Janeiro",
+            "Santiago", "Caracas", "Medellín", "Quito", "Montevideo"
+        ],
+        europe: [
+            "London", "Paris", "Berlin", "Rome", "Madrid",
+            "Amsterdam", "Brussels", "Vienna", "Stockholm", "Copenhagen"
+        ],
+        asia: [
+            "Tokyo", "Shanghai", "Seoul", "Mumbai", "Beijing",
+            "Singapore", "Bangkok", "Dubai", "Hong Kong", "Jakarta"
+        ],
+        africa: [
+            "Cairo", "Lagos", "Johannesburg", "Nairobi", "Casablanca",
+            "Cape Town", "Accra", "Dakar", "Addis Ababa", "Dar es Salaam"
+        ],
+        oceania: [
+            "Sydney", "Melbourne", "Auckland", "Brisbane", "Perth",
+            "Wellington", "Adelaide", "Gold Coast", "Christchurch", "Hobart"
+        ]
+    };
+
+    // Get the select elements
+    const regionSelect = document.getElementById('geoRegion');
+    const citySelect = document.getElementById('city');
+
+    // Add event listener for region change
+    regionSelect.addEventListener('change', function() {
+        // Enable city select
+        citySelect.disabled = false;
+        
+        // Clear existing options
+        citySelect.innerHTML = '<option selected>Choose a city...</option>';
+        
+        // Get selected region
+        const selectedRegion = this.value;
+        
+        // If we have cities for this region
+        if (cityData[selectedRegion]) {
+            // Add new options
+            cityData[selectedRegion].forEach(city => {
+                const option = document.createElement('option');
+                option.value = city.toLowerCase().replace(/\s+/g, '-');
+                option.textContent = city;
+                citySelect.appendChild(option);
+            });
+        }
+    });
+</script>
+
+<%- include("footer") %>
