@@ -60,8 +60,19 @@
         eventsHash[event.id] = event;
         events.push(event);
 
-
         createMarker(map,[event.lat, event.long], `Event ID: ${event.id} <br>Authority: ${event.authority}<br>Severity: ${event.severity}`)
+        const newEvent = {
+          id: event.id,
+          users_id: event.users_id,
+          time_created: event.time_created,
+          data: event.data,
+          severity: event.severity,
+          authority: event.authority,
+          lat: event.lat,
+          long: event.long
+        };
+        addNewEvent(newEvent);
+
 
 
       } else if (data.operation === "UPDATE") {

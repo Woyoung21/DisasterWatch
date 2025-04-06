@@ -83,7 +83,7 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      alert(response.ok ? "Event added successfully!" : "Failed to add event.");
+      // alert(response.ok ? "Event added successfully!" : "Failed to add event.");
     } catch (error) {
       alert("Error: " + error.message);
     }

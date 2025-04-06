@@ -1,0 +1,75 @@
+<div class="container mt-4" id="eventsContainer">
+  <h2>Event List</h2>
+  <div class="events-scroll-container">
+    <ul class="list-group" id="eventsList">
+      <% 
+        // Sort events from oldest to newest
+        const sortedEvents = [...events].sort((a, b) => {
+          const dateA = new Date(a.time_created);
+          const dateB = new Date(b.time_created);
+          return dateA - dateB; // Ascending order (oldest first)
+        });
+        
+        sortedEvents.forEach(event => { 
+      %>
+        <% 
+          // Format date to MM-DD-YY
+          const date = new Date(event.time_created);
+          const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}-${date.getFullYear().toString().slice(-2)} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+          
+          // Get description or default text
+          const description = event.data && event.data.description ? event.data.description : 'No description available';
+        %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <small class="text-muted me-2"><i class="bi bi-calendar"></i> <%= formattedDate %></small>
+            <small class="text-secondary me-3"><i class="bi bi-person"></i> <%= event.users_id %></small>
+            <span class="description"><%= description %></span>
+          </div>
+          <% if (event.severity) { %>
+            <span class="badge bg-<%= event.severity === 'high' ? 'danger' : 'warning' %>"><%= event.severity %></span>
+          <% } %>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+</div>
+
+<style>
+  .events-scroll-container {
+    max-height: 300px; /* Adjust this value as needed */
+    overflow-y: auto;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+  }
+  
+  /* For better scrollbar appearance */
+  .events-scroll-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .events-scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+  
+  .events-scroll-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+  
+  .events-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  
+  /* Remove rounded corners from first and last items in the list */
+  .events-scroll-container .list-group-item:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  
+  .events-scroll-container .list-group-item:last-child {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+</style>
