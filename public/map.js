@@ -88,7 +88,7 @@ const regionViews = {
 let map;
 
 export function initializeMap(elementId) {
-    map = L.map(elementId).setView([37.7749, -122.4194], 5);
+    map = L.map(elementId).setView([37.7749, -122.4194], 19);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
