@@ -38,8 +38,18 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <% if (includeListener) { %>
-      <%- include('partials/listenerInclude.ejs') %>
-    <% } %>
+    <script>
+        // 1) On page load, read the saved theme from localStorage.
+        // 2) If present, apply that theme class to <body>.
+        document.addEventListener('DOMContentLoaded', () => {
+            const storedTheme = localStorage.getItem('preferredTheme');
+            console.log('Current theme:', storedTheme); // Debug log
+
+            if (storedTheme) {
+                document.body.classList.remove('theme-light', 'theme-dark', 'theme-colorblind');
+                document.body.classList.add(storedTheme);
+            }
+        });
+    </script>
   </body>
 </html>
