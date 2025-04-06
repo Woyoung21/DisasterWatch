@@ -70,14 +70,16 @@ app.post("/api/events", async (req, res) => {
     //     return res.status(400).send("Invalid JSON in additional data.");
     //   }
     // }
-    await dbFunctions.insertEventNoId({
+    myEvent = {
       users_id: Number(users_id),
       lat: Number(lat),
       long: Number(long),
       data: {description: data},
       authority,
       severity,
-    });
+    };
+    console.log("Parsed event data:", myEvent);
+    await dbFunctions.insertEventNoId(myEvent);
     res.redirect("/events");
   } catch (error) {
     console.error("Error inserting event:", error);

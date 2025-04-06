@@ -6,6 +6,22 @@
   </div>
 </div>
 
+
+<!-- Add Event Modal -->
+<div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addEventModalLabel">Add New Event</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+            <%- include("./addEvent") %>
+      </div>
+    </div>
+  </div>
+</div>
+
 <link
   rel="stylesheet"
   href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -37,6 +53,21 @@
   // .addTo(map)
   // .bindPopup("San Francisco")
   // .openPopup();
+
+  // on click handler
+  map.on('click', function(e) {
+  // Get clicked coordinates
+  const lat = e.latlng.lat;
+  const lng = e.latlng.lng;
+  
+  // Set values in hidden form fields
+  document.getElementById('lat').value = lat;
+  document.getElementById('long').value = lng;
+  
+  // Show the modal
+  const addEventModal = new bootstrap.Modal(document.getElementById('addEventModal'));
+  addEventModal.show();
+});
 
   // Additional markers or features can be added here if needed.
   const events = <%- JSON.stringify(events) %>;
