@@ -130,11 +130,5 @@
             // Append the card to the card container div
             cardContainer.appendChild(div)
         })
-        // Set favicon to the first weather icon
-        const head = document.getElementsByTagName("head")[0]
-        const link = document.createElement("link")
-        link.rel = "icon"
-        link.href = periods[0].icon.replace("medium", "small")
-        head.appendChild(link)
     }
 </script>

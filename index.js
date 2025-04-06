@@ -22,7 +22,12 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.get("/", async (req, res) => {
-  res.render("dashboard");
+  const result = await db.query("select * from events;");
+  res.render("dashboard", {
+    includeListener: true,
+    events: result.rows,
+    eventsHash: dbFunctions.transformEventsToHash(result.rows),
+  });
 });
 
 app.get("/aboutUs", async (req, res) => {
