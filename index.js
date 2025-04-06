@@ -74,7 +74,7 @@ app.post("/api/events", async (req, res) => {
       users_id: Number(users_id),
       lat: Number(lat),
       long: Number(long),
-      data: {description: data},
+      data: { description: data },
       authority,
       severity,
     };

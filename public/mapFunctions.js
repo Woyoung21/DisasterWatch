@@ -1,15 +1,27 @@
-function createMarker(
-  map,
-  coordinates,
-  text,
-  type = "unknown",
-  user = "anonymous"
-) {
+user= {
+  1: "Anonymous",
+  2: "SFFD",
+  3: "Nation Weather Svc",
+  4: "SFPD",
+};
+
+function createMarker(map, event) {
+  console.log("Creating marker for event:", event);
+  coordinates = [event.lat, event.long];
   const marker = L.marker(coordinates).addTo(map);
+  // msg conist of date, user, and data.description
+  const fDate = new Date(event.time_created).toLocaleString();
+  const msg = `
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">${user[event.users_id]}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">${fDate}</h6>
+        <p class="card-text">${event.data.description}</p>
+      </div>
+    </div>
+  `;
   marker
-    .bindPopup(
-      `2025-04-04: User ${user} reported event ${type}, [${coordinates[0]},${coordinates[1]}], '${text}'`
-    )
+    .bindPopup(msg)
     .openPopup();
   return marker;
 }
