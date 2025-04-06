@@ -1,6 +1,6 @@
 <div class="container mt-5">
   <h2>Add New Event</h2>
-  <form action="/events" method="POST">
+  <form id="addEventForm" onsubmit="submitForm(event)">
     <div class="mb-3">
       <label for="id" class="form-label">Event ID</label>
       <input type="number" class="form-control" id="id" name="id" required />
@@ -63,3 +63,33 @@
     <button type="submit" class="btn btn-primary">Submit Event</button>
   </form>
 </div>
+
+<script>
+  async function submitForm(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    // Optionally, parse the JSON if provided
+    if (data.data) {
+      try {
+        data.data = JSON.parse(data.data);
+      } catch (error) {
+        return console.log("Invalid JSON in Additional Data field.");
+      }
+    }
+
+    try {
+      const response = await fetch("/api/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      alert(response.ok ? "Event added successfully!" : "Failed to add event.");
+    } catch (error) {
+      alert("Error: " + error.message);
+    }
+  }
+</script>
