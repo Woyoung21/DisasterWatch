@@ -3,6 +3,38 @@ const dbFunctions = require("./db/functions");
 story_beats = [
   [
     {
+      users_id: 3,
+      lat: 37.769,
+      long: -122.483,
+      time_created: new Date(),
+      time_updated: new Date(),
+      time_expiry: new Date(Date.now() + 86400000),
+      data: {
+        description:
+          "Red Flag Warning : A red flag warning has been issued for the area. High winds and dry conditions expected.",
+      },
+      authority: "",
+      severity: "high",
+    },
+  ],
+  [
+    {
+      users_id: 1,
+      lat: 37.769,
+      long: -122.483,
+      time_created: new Date(),
+      time_updated: new Date(),
+      time_expiry: new Date(Date.now() + 86400000),
+      data: {
+        description:
+          "Fire : I see heavy smoke rising near Golden Gate Park. Stay safe everyone!",
+      },
+      authority: "",
+      severity: "low",
+    },
+  ],
+  [
+    {
       users_id: 1,
       lat: 37.7709,
       long: -122.4569,
@@ -257,18 +289,18 @@ function waitForKeyPress() {
 }
 
 async function main() {
-    await dbFunctions.deleteAllEvent();
-    console.log("Deleted all events from the database.");
+  await dbFunctions.deleteAllEvent();
+  console.log("Deleted all events from the database.");
 
-    await waitForKeyPress();
-    for (const beat of story_beats) {
-        for (const event of beat) {
-            console.log("coordinates", event.lat, event.long);
-            console.log("event", event.data.description);
-            await dbFunctions.insertEventNoId(event);
-        }
-        await waitForKeyPress();
+  await waitForKeyPress();
+  for (const beat of story_beats) {
+    for (const event of beat) {
+      console.log("coordinates", event.lat, event.long);
+      console.log("event", event.data.description);
+      await dbFunctions.insertEventNoId(event);
     }
+    await waitForKeyPress();
+  }
 }
 
-main()
+main();
