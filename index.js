@@ -34,7 +34,12 @@ app.get("/userSettings", async (req, res) => {
 });
 
 app.get("/dashboard", async (req, res) => {
-  res.render("dashboard");
+  const result = await db.query("select * from events;");
+  res.render("dashboard", {
+    includeListener: true,
+    events: result.rows,
+    eventsHash: dbFunctions.transformEventsToHash(result.rows),
+  });
 });
 
 app.get("/events", async (req, res) => {

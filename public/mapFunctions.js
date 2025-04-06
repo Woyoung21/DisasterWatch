@@ -1,4 +1,4 @@
-user= {
+user = {
   1: "Anonymous",
   2: "SFFD",
   3: "Nation Weather Svc",
@@ -73,12 +73,14 @@ function addNewEvent(eventData) {
   // Add user ID
   const userElement = document.createElement("small");
   userElement.className = "text-secondary me-3";
-  userElement.innerHTML = `<i class="bi bi-person"></i> ${eventData.users_id}`;
+  userElement.innerHTML = `<i class="bi bi-person"></i> ${
+    user[eventData.users_id]
+  }`;
   contentDiv.appendChild(userElement);
 
   // Add description
   const descElement = document.createElement("span");
-  descElement.className = "description";
+  descElement.className = "description pl-1";
   descElement.textContent = description;
   contentDiv.appendChild(descElement);
 
@@ -121,8 +123,15 @@ function addNewEvent(eventData) {
     eventsList.appendChild(listItem);
   }
 
-  const container = document.querySelector(".events-scroll-container");
+  // const container = document.querySelector(".events-scroll-container");
   // container.scrollIntoView({ behavior: "smooth" });
+  // container.scrollTop = container.scrollHeight;
+
+  // const container = document.querySelector(".events-scroll-container");
+  // const lastItem = container.lastElementChild;
+  // if (lastItem) {
+  //   lastItem.scrollIntoView({ behavior: "smooth" });
+  // }
   // container.scrollTop = container.scrollHeight;
   
 }

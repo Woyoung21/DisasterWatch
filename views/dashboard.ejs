@@ -13,7 +13,7 @@
                 <div class="card mb-4">
                     <div class="card-header">Live Feed</div>
                     <div class="card-body">
-                        <div class="resizable-container" id="liveFeed">
+                        <!-- <div class="resizable-container" id="liveFeed">
                             <p>Real-time disaster and weather alerts will be shown here.</p>
                             <div class="live-window" aria-live="polite">
                                 <ul class="list-unstyled">
@@ -25,7 +25,8 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
+                        <%- include("./partials/liveFeed") %>
                     </div>
                 </div>
             </div>
@@ -35,7 +36,8 @@
                 <div class="card mb-4">
                     <div class="card-header">Map Visualization</div>
                     <div class="card-body">
-                        <div id="map" style="height: 400px; width: 100%;"></div>
+                        <!-- <div id="map" style="height: 400px; width: 100%;"></div> -->
+                         <%- include("./partials/map") %>
                     </div>
                 </div>
             </div>
