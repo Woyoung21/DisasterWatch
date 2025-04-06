@@ -67,6 +67,38 @@ async function insertEvent({
   return db.query(query, params);
 }
 
+async function insertEventNoId({
+  users_id,
+  lat,
+  long,
+  time_created = new Date(),
+  time_updated = new Date(),
+  time_expiry,
+  data,
+  authority,
+  severity,
+}) {
+  if (!time_expiry) {
+    time_expiry = new Date(Date.now() + 86400000); // default to 1 day later
+  }
+  const query = `
+        INSERT INTO events (users_id, lat, long, time_created, time_updated, time_expiry, data, authority, severity)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    `;
+  const params = [
+    users_id,
+    lat,
+    long,
+    time_created,
+    time_updated,
+    time_expiry,
+    JSON.stringify(data),
+    authority,
+    severity,
+  ];
+  return db.query(query, params);
+}
+
 /**
  * Get a user by ID.
  * @param {number} id - The user ID.
@@ -225,6 +257,7 @@ function transformEventsToHash(events) {
 module.exports = {
   insertUser,
   insertEvent,
+  insertEventNoId,
   getUserById,
   getAllUsers,
   updateUser,
