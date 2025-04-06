@@ -33,10 +33,11 @@
   }).addTo(map);
 
   // Add a marker to San Francisco
-    L.marker([37.7749, -122.4194])
-  .addTo(map)
-  .bindPopup("San Francisco")
-  .openPopup();
+  //   L.marker([37.7749, -122.4194])
+  // .addTo(map)
+  // .bindPopup("San Francisco")
+  // .openPopup();
+
   // Additional markers or features can be added here if needed.
   const events = <%- JSON.stringify(events) %>;
   const eventsHash = <%- JSON.stringify(eventsHash) %>;
@@ -58,13 +59,6 @@
         const event = data.record;
         eventsHash[event.id] = event;
         events.push(event);
-
-        // var map = L.map("map");
-
-        // L.marker([37.7749, -122.4194])
-        //     .addTo(map)
-        //     .bindPopup("San Francisco")
-        //     .openPopup();
 
 
         createMarker(map,[event.lat, event.long], `Event ID: ${event.id} <br>Authority: ${event.authority}<br>Severity: ${event.severity}`)
