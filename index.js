@@ -62,19 +62,19 @@ app.post("/api/events", async (req, res) => {
   try {
     console.log("Received event data:", req.body);
     const { users_id, lat, long, data, authority, severity } = req.body;
-    let parsedData = {};
-    if (data) {
-      try {
-        parsedData = JSON.parse(data);
-      } catch (err) {
-        return res.status(400).send("Invalid JSON in additional data.");
-      }
-    }
+    // let parsedData = {};
+    // if (data) {
+    //   try {
+    //     parsedData = JSON.parse(data);
+    //   } catch (err) {
+    //     return res.status(400).send("Invalid JSON in additional data.");
+    //   }
+    // }
     await dbFunctions.insertEventNoId({
       users_id: Number(users_id),
       lat: Number(lat),
       long: Number(long),
-      data: parsedData,
+      data: {description: data},
       authority,
       severity,
     });

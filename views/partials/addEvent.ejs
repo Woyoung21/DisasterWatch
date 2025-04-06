@@ -34,19 +34,19 @@
       />
     </div>
     <div class="mb-3">
-      <label for="data" class="form-label">Additional Data (JSON)</label>
+      <label for="data" class="form-label">Event details</label>
       <textarea
         class="form-control"
         id="data"
         name="data"
         rows="3"
-        placeholder='{"description": "event description"}'
+        placeholder='Details of event.'
       ></textarea>
     </div>
-    <div class="mb-3">
+    <!-- <div class="mb-3">
       <label for="authority" class="form-label">Authority</label>
       <input type="text" class="form-control" id="authority" name="authority" />
-    </div>
+    </div> -->
     <div class="mb-3">
       <label for="severity" class="form-label">Severity</label>
       <select class="form-select" id="severity" name="severity">
@@ -67,15 +67,6 @@
     const form = event.target;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-
-    // Optionally, parse the JSON if provided
-    if (data.data) {
-      try {
-        data.data = JSON.parse(data.data);
-      } catch (error) {
-        return console.log("Invalid JSON in Additional Data field.");
-      }
-    }
 
     try {
       const response = await fetch("/api/events", {
