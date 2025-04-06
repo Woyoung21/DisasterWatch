@@ -47,34 +47,55 @@
     border: 1px solid rgba(0,0,0,.125);
     border-radius: 0.25rem;
   }
-  
+
   /* For better scrollbar appearance */
   .events-scroll-container::-webkit-scrollbar {
     width: 8px;
   }
-  
+
   .events-scroll-container::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 4px;
   }
-  
+
   .events-scroll-container::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 4px;
   }
-  
+
   .events-scroll-container::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
-  
+
   /* Remove rounded corners from first and last items in the list */
   .events-scroll-container .list-group-item:first-child {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
-  
+
   .events-scroll-container .list-group-item:last-child {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+  }
+
+  /* Dark theme styles for live feed */
+  .theme-dark .events-scroll-container {
+    background-color: #000000; /* Black background */
+    color: #ffffff; /* White text */
+    border: 1px solid #444; /* Darker border */
+  }
+
+  .theme-dark .list-group-item {
+    background-color: #1e1e1e; /* Dark gray for individual items */
+    color: #ffffff; /* White text */
+    border-color: #444; /* Darker border for items */
+  }
+
+  .theme-dark .list-group-item .text-muted {
+    color: #aaaaaa; /* Light gray for muted text */
+  }
+
+  .theme-dark .list-group-item .text-secondary {
+    color: #cccccc; /* Slightly lighter gray for secondary text */
   }
 </style>
