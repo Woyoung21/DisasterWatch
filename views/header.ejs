@@ -8,69 +8,177 @@
 	<!-- Include Bootstrap CSS -->
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
 	<style>
-		/*****************************************************
-		1) THEME CLASSES
-			(Copied from userSettings.html so they match exactly.)
-		******************************************************/
-		/* LIGHT THEME */
-		.theme-light {
-			background-color: #ffffff;
-			color: #000000;
-		}
+        .theme-light {
+            background-color: #ffffff;
+            color: #000000;
+        }
 
-		/* DARK THEME */
-		.theme-dark {
-			background-color: #121212;
-			color: #ffffff;
-		}
+        .theme-dark {
+            background-color: #121212;
+            color: #ffffff;
+        }
 
-		.theme-dark .card {
-			background-color: #1e1e1e;
-			color: #ffffff;
-			border: 1px solid #666666;
-			box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05);
-		}
+        .theme-dark .card {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            border: 1px solid #666;
+        }
 
-		.theme-dark .card-header {
-			background-color: #1e1e1e;
-			border-bottom: 1px solid #666666;
-			color: #ffffff;
-		}
+        .theme-dark .card-header {
+            background-color: #1e1e1e;
+            border-bottom: 1px solid #666;
+            color: #ffffff;
+        }
 
-		/* COLOR-BLIND-FRIENDLY THEME */
-		.theme-colorblind {
-			background-color: #f5f5f5;
-			color: #0a0a0a;
-		}
+        .theme-colorblind {
+            background-color: #f5f5f5;
+            color: #0a0a0a;
+        }
 
-		.theme-colorblind .card {
-			background-color: inherit;
-			color: inherit;
-			border: 1px solid #666666;
-		}
+        .theme-colorblind .card {
+            background-color: inherit;
+            color: inherit;
+            border: 1px solid #666;
+        }
 
-		.theme-colorblind .card-header {
-			background-color: inherit;
-			border-bottom: 1px solid #666666;
-			color: inherit;
-		}
+        .theme-colorblind .card-header {
+            background-color: inherit;
+            border-bottom: 1px solid #666;
+            color: inherit;
+        }
 
-		/*****************************************************
-		2) PAGE-SPECIFIC STYLING 
-			(to resemble your wireframe)
-    	******************************************************/
-		.card-header {
-			font-weight: 600;
-			letter-spacing: 0.5px;
-		}
+        .card-header {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .spinner-border {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .resizable-container {
+            position: relative;
+            resize: both;
+            overflow: auto;
+            height: 400px;
+            /* Set initial fixed height for both containers */
+            min-height: 200px;
+            min-width: 300px;
+            max-height: 800px;
+            max-width: 100%;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            background-color: #f9f9f9;
+        }
+
+        /* Theme-specific styles */
+        .theme-dark .resizable-container {
+            border-color: #666;
+            background-color: #2a2a2a;
+            color: #fff;
+        }
+
+        .theme-colorblind .resizable-container {
+            border-color: #444;
+            background-color: #e9e9e9;
+            color: #000;
+        }
+
+        /* Resize handle indicator */
+        .resizable-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 15px;
+            height: 15px;
+            cursor: nwse-resize;
+            background:
+                linear-gradient(135deg, transparent 50%, #666 50%),
+                linear-gradient(-135deg, transparent 50%, #666 50%);
+            background-size: 50% 50%;
+            background-position: right bottom;
+            background-repeat: no-repeat;
+        }
+
+        .theme-dark .resizable-container::after {
+            background:
+                linear-gradient(135deg, transparent 50%, #999 50%),
+                linear-gradient(-135deg, transparent 50%, #999 50%);
+        }
 	</style>
+
+    <style>
+        /*****************************************************
+        1) THEME CLASSES
+            (Copied from userSettings.html so they match exactly.)
+        ******************************************************/
+        /* LIGHT THEME */
+        .theme-light {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        /* DARK THEME */
+        .theme-dark {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .theme-dark .card {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            border: 1px solid #666666;
+            box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05);
+        }
+
+        .theme-dark .card-header {
+            background-color: #1e1e1e;
+            border-bottom: 1px solid #666666;
+            color: #ffffff;
+        }
+
+        /* COLOR-BLIND-FRIENDLY THEME */
+        .theme-colorblind {
+            background-color: #f5f5f5;
+            color: #0a0a0a;
+        }
+
+        .theme-colorblind .card {
+            background-color: inherit;
+            color: inherit;
+            border: 1px solid #666666;
+        }
+
+        .theme-colorblind .card-header {
+            background-color: inherit;
+            border-bottom: 1px solid #666666;
+            color: inherit;
+        }
+
+        /*****************************************************
+        2) PAGE-SPECIFIC STYLING 
+            (to resemble your wireframe)
+        ******************************************************/
+        .card-header {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+    </style>
+
 </head>
 
 <body class="theme-light"> <!-- This will be overridden by localStorage on load -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#">OSINow</a>
+			<a class="navbar-brand" href="#">DisasterWatch</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
 				aria-label="Toggle navigation">
@@ -83,11 +191,13 @@
 						<a class="nav-link" href="/dashboard">Dashboard</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">User Settings</a>
+						<a class="nav-link active" href="/events">Alert</a>
 					</li>
 					<li class="nav-item">
-						<!-- Mark the About tab as active -->
-						<a class="nav-link active" href="#">About</a>
+						<a class="nav-link" href="/userSettings">User Settings</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" href="/aboutUs">About Us</a>
 					</li>
 				</ul>
 			</div>

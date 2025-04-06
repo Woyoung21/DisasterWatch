@@ -1,338 +1,274 @@
 <%- include("header") %>
 
-    <head>
-          <style>
-    .theme-light { background-color: #ffffff; color: #000000; }
-    .theme-dark { background-color: #121212; color: #ffffff; }
-    .theme-dark .card { background-color: #1e1e1e; color: #ffffff; border: 1px solid #666; }
-    .theme-dark .card-header { background-color: #1e1e1e; border-bottom: 1px solid #666; color: #ffffff; }
-    .theme-colorblind { background-color: #f5f5f5; color: #0a0a0a; }
-    .theme-colorblind .card { background-color: inherit; color: inherit; border: 1px solid #666; }
-    .theme-colorblind .card-header { background-color: inherit; border-bottom: 1px solid #666; color: inherit; }
-    .card-header { font-weight: 600; letter-spacing: 0.5px; }
-    .spinner-border { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-    .resizable-container {
-      position: relative;
-      resize: both;
-      overflow: auto;
-      height: 400px;  /* Set initial fixed height for both containers */
-      min-height: 200px;
-      min-width: 300px;
-      max-height: 800px;
-      max-width: 100%;
-      padding: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      margin-bottom: 1rem;
-      background-color: #f9f9f9;
-    }
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    /* Theme-specific styles */
-    .theme-dark .resizable-container {
-      border-color: #666;
-      background-color: #2a2a2a;
-      color: #fff;
-    }
+    <main class="container mt-5" role="main">
+        <h1 class="mb-4 text-center">Dashboard</h1>
 
-    .theme-colorblind .resizable-container {
-      border-color: #444;
-      background-color: #e9e9e9;
-      color: #000;
-    }
-
-    /* Resize handle indicator */
-    .resizable-container::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 15px;
-      height: 15px;
-      cursor: nwse-resize;
-      background: 
-        linear-gradient(135deg, transparent 50%, #666 50%),
-        linear-gradient(-135deg, transparent 50%, #666 50%);
-      background-size: 50% 50%;
-      background-position: right bottom;
-      background-repeat: no-repeat;
-    }
-
-    .theme-dark .resizable-container::after {
-      background: 
-        linear-gradient(135deg, transparent 50%, #999 50%),
-        linear-gradient(-135deg, transparent 50%, #999 50%);
-    }
-  </style>
-    </head>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <main class="container mt-5" role="main">
-    <h1 class="mb-4 text-center">Dashboard</h1>
-
-    <!-- Top Section: Live Feed and Map -->
-    <div class="row">
-      <div class="col-md-6">
-        <!-- Live Feed -->
-        <div class="card mb-4">
-          <div class="card-header">Live Feed</div>
-          <div class="card-body">
-            <div class="resizable-container" id="liveFeed">
-              <p>Real-time disaster and weather alerts will be shown here.</p>
-              <div class="live-window" aria-live="polite">
-                <ul class="list-unstyled">
-                  <li><strong>2025-04-04:</strong> User reported event 1, location, message</li>
-                  <li><strong>2025-04-04:</strong> User reported event 2, location, message</li>
-                  <li><strong>2025-04-04:</strong> User reported event 3, location, message</li>
-                  <li><strong>2025-04-04:</strong> Govt reported event 4, location, message</li>
-                  <li><strong>2025-04-04:</strong> Govt agency reported event 5, location, message</li>
-                </ul>
-              </div>
+        <!-- Top Section: Live Feed and Map -->
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Live Feed -->
+                <div class="card mb-4">
+                    <div class="card-header">Live Feed</div>
+                    <div class="card-body">
+                        <div class="resizable-container" id="liveFeed">
+                            <p>Real-time disaster and weather alerts will be shown here.</p>
+                            <div class="live-window" aria-live="polite">
+                                <ul class="list-unstyled">
+                                    <li><strong>2025-04-04:</strong> User reported event 1, location, message</li>
+                                    <li><strong>2025-04-04:</strong> User reported event 2, location, message</li>
+                                    <li><strong>2025-04-04:</strong> User reported event 3, location, message</li>
+                                    <li><strong>2025-04-04:</strong> Govt reported event 4, location, message</li>
+                                    <li><strong>2025-04-04:</strong> Govt agency reported event 5, location, message
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="col-md-6">
-        <!-- Map Visualization -->
-        <div class="card mb-4">
-          <div class="card-header">Map Visualization</div>
-          <div class="card-body">
-            <div id="map" style="height: 400px; width: 100%;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bottom Section: Historical Disasters and Regional Disaster Susceptibility -->
-    <div class="row">
-      <div class="col-md-6">
-        <!-- Historical Disasters -->
-        <div class="card mb-4">
-          <div class="card-header">Historical Disasters</div>
-          <div class="card-body">
-            <div class="resizable-container" id="historyWindow">
-              <!-- Content will be dynamically populated -->
+            <div class="col-md-6">
+                <!-- Map Visualization -->
+                <div class="card mb-4">
+                    <div class="card-header">Map Visualization</div>
+                    <div class="card-body">
+                        <div id="map" style="height: 400px; width: 100%;"></div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
 
-      <div class="col-md-6">
-        <!-- Regional Disaster Susceptibility -->
-        <div class="card mb-4">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Regional Disaster Susceptibility</span>
-            <div class="d-flex align-items-center gap-2">
-              <label for="regionSelector" class="visually-hidden">Select Region</label>
-              <select id="regionSelector" class="form-select form-select-sm" aria-label="Region Selector">
-                <option value="">Select Region...</option>
-                <option value="West Coast">West Coast</option>
-                <option value="Central US">Central US</option>
-                <option value="East Coast">East Coast</option>
-              </select>
-              <label for="citySelector" class="visually-hidden">Select City</label>
-              <select id="citySelector" class="form-select form-select-sm" aria-label="City Selector">
-                <option value="">Select City...</option>
-              </select>
+        <!-- Bottom Section: Historical Disasters and Regional Disaster Susceptibility -->
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Historical Disasters -->
+                <div class="card mb-4">
+                    <div class="card-header">Historical Disasters</div>
+                    <div class="card-body">
+                        <div class="resizable-container" id="historyWindow">
+                            <!-- Content will be dynamically populated -->
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="card-body">
-            <div class="resizable-container" id="disasterList">
-              <div class="spinner-border d-none" role="status" aria-live="polite">
-                <span class="visually-hidden">Loading disaster data...</span>
-              </div>
+
+            <div class="col-md-6">
+                <!-- Regional Disaster Susceptibility -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Regional Disaster Susceptibility</span>
+                        <div class="d-flex align-items-center gap-2">
+                            <label for="regionSelector" class="visually-hidden">Select Region</label>
+                            <select id="regionSelector" class="form-select form-select-sm" aria-label="Region Selector">
+                                <option value="">Select Region...</option>
+                                <option value="West Coast">West Coast</option>
+                                <option value="Central US">Central US</option>
+                                <option value="East Coast">East Coast</option>
+                            </select>
+                            <label for="citySelector" class="visually-hidden">Select City</label>
+                            <select id="citySelector" class="form-select form-select-sm" aria-label="City Selector">
+                                <option value="">Select City...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="resizable-container" id="disasterList">
+                            <div class="spinner-border d-none" role="status" aria-live="polite">
+                                <span class="visually-hidden">Loading disaster data...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
 
-  </main>
+    </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script type="module">
-    import { getRegionalDisasterHistory, getHistoricalDisasters } from './api.js';
-    import { initializeMap, initalizeFireReigon, updateMapView, cityCoordinates, createMarker } from './map.js';
-    import { getUserLocation, findNearestCity } from './utils.js';
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { getRegionalDisasterHistory, getHistoricalDisasters } from './api.js';
+        import { initializeMap, initalizeFireReigon, updateMapView, cityCoordinates, createMarker } from './map.js';
+        import { getUserLocation, findNearestCity } from './utils.js';
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      const body = document.body;
-      const storedTheme = localStorage.getItem('preferredTheme');
-      if (storedTheme) {
-        body.classList.remove('theme-light', 'theme-dark', 'theme-colorblind');
-        body.classList.add(storedTheme);
-      }
+        document.addEventListener('DOMContentLoaded', async () => {
+            const body = document.body;
+            const storedTheme = localStorage.getItem('preferredTheme');
+            if (storedTheme) {
+                body.classList.remove('theme-light', 'theme-dark', 'theme-colorblind');
+                body.classList.add(storedTheme);
+            }
 
-      const regionSelector = document.getElementById('regionSelector');
-      const citySelector = document.getElementById('citySelector');
-      const disasterList = document.getElementById('disasterList');
-      const spinner = document.querySelector('.spinner-border');
-      const historyWindow = document.getElementById('historyWindow');
+            const regionSelector = document.getElementById('regionSelector');
+            const citySelector = document.getElementById('citySelector');
+            const disasterList = document.getElementById('disasterList');
+            const spinner = document.querySelector('.spinner-border');
+            const historyWindow = document.getElementById('historyWindow');
 
-      const cityMap = {
-        'West Coast': ['Los Angeles', 'San Diego', 'San Francisco','Santa Rosa', 'San Jose', 'Seattle', 'Portland', 'Sacramento', 'Oakland', 'Long Beach', 'Anaheim'],
-        'Central US': ['Chicago', 'Detroit', 'Minneapolis', 'Cleveland', 'Omaha', 'St. Louis', 'Indianapolis', 'Columbus', 'Milwaukee', 'Kansas City', 'Cincinnati'],
-        'East Coast': ['New York City', 'Boston', 'Philadelphia', 'Washington, D.C.', 'Miami', 'Baltimore', 'Newark', 'Providence', 'Atlanta', 'Tampa']
+            const cityMap = {
+                'West Coast': ['Los Angeles', 'San Diego', 'San Francisco', 'Santa Rosa', 'San Jose', 'Seattle', 'Portland', 'Sacramento', 'Oakland', 'Long Beach', 'Anaheim'],
+                'Central US': ['Chicago', 'Detroit', 'Minneapolis', 'Cleveland', 'Omaha', 'St. Louis', 'Indianapolis', 'Columbus', 'Milwaukee', 'Kansas City', 'Cincinnati'],
+                'East Coast': ['New York City', 'Boston', 'Philadelphia', 'Washington, D.C.', 'Miami', 'Baltimore', 'Newark', 'Providence', 'Atlanta', 'Tampa']
 
-      };
+            };
 
-      // Initialize map using the imported function
-      const map = initializeMap('map');
-      const fireReigon = initalizeFireReigon();
+            // Initialize map using the imported function
+            const map = initializeMap('map');
+            const fireReigon = initalizeFireReigon();
 
-      // Initialize with user's location
-      try {
-        const location = await getUserLocation();
-        const nearestCity = findNearestCity(location.latitude, location.longitude, cityCoordinates);
-        
-        // Find which region contains this city
-        let userRegion = null;
-        for (const [region, cities] of Object.entries(cityMap)) {
-          if (cities.includes(nearestCity)) {
-            userRegion = region;
-            break;
-          }
-        }
+            // Initialize with user's location
+            try {
+                const location = await getUserLocation();
+                const nearestCity = findNearestCity(location.latitude, location.longitude, cityCoordinates);
 
-        if (userRegion && nearestCity) {
-          // Set the region selector
-          regionSelector.value = userRegion;
-          
-          // Populate city selector
-          citySelector.innerHTML = '<option value="">Select City...</option>';
-          cityMap[userRegion].forEach(city => {
-            const option = document.createElement('option');
-            option.value = city;
-            option.textContent = city;
-            citySelector.appendChild(option);
-          });
+                // Find which region contains this city
+                let userRegion = null;
+                for (const [region, cities] of Object.entries(cityMap)) {
+                    if (cities.includes(nearestCity)) {
+                        userRegion = region;
+                        break;
+                    }
+                }
 
-          // Set the city selector
-          citySelector.value = nearestCity;
+                if (userRegion && nearestCity) {
+                    // Set the region selector
+                    regionSelector.value = userRegion;
 
-          // Update map and data
-          updateMapView(map, nearestCity, userRegion);
-          await Promise.all([
-            updateDisasterData(userRegion, nearestCity),
-            updateHistoricalData(userRegion, nearestCity)
-          ]);
-        }
-      } catch (error) {
-        console.error('Error initializing location:', error);
-        // Fall back to default view
-        updateMapView(map, null, 'West Coast');
-      }
+                    // Populate city selector
+                    citySelector.innerHTML = '<option value="">Select City...</option>';
+                    cityMap[userRegion].forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelector.appendChild(option);
+                    });
 
-      regionSelector.addEventListener('change', async (e) => {
-        const region = e.target.value;
-        citySelector.innerHTML = '<option value="">Select City...</option>';
-        if (region && cityMap[region]) {
-          cityMap[region].forEach(city => {
-            const option = document.createElement('option');
-            option.value = city;
-            option.textContent = city;
-            citySelector.appendChild(option);
-          });
-          updateMapView(map, null, region);
-          await Promise.all([
-            updateDisasterData(region),
-            updateHistoricalData(region)
-          ]);
-        }
-      });
+                    // Set the city selector
+                    citySelector.value = nearestCity;
 
-      citySelector.addEventListener('change', async (e) => {
-        const region = regionSelector.value;
-        const city = e.target.value;
-        if (city) {
-          updateMapView(map, city, region);
-          await Promise.all([
-            updateDisasterData(region, city),
-            updateHistoricalData(region, city)
-          ]);
-        }
-      });
+                    // Update map and data
+                    updateMapView(map, nearestCity, userRegion);
+                    await Promise.all([
+                        updateDisasterData(userRegion, nearestCity),
+                        updateHistoricalData(userRegion, nearestCity)
+                    ]);
+                }
+            } catch (error) {
+                console.error('Error initializing location:', error);
+                // Fall back to default view
+                updateMapView(map, null, 'West Coast');
+            }
 
-      // HARDCODED DATA JUST TO VISUALIZE PINS
-      const pinDataStream = [
-        [37.7709, -122.4569, "I see heavy smoke rising near Golden Gate Park. Stay safe everyone!"],
-        [37.773361, -122.460952, "Fire trucks are rushing towards the park area. Hope everyone is okay."],
-        [37.771172, -122.45506, "A fire has broken out near the Conservatory of Flowers. Avoid the area if possible."],
-        [37.773293, -122.469964, "Witnessed flames near a building on Fulton Street. Authorities are on the scene."],
-        [37.771393, -122.45091, "Golden Gate Park is being evacuated due to a fire. Please follow safety protocols."],
-        [37.767382, -122.477297, "The fire near Stow Lake seems to be spreading. Stay alert and avoid the area."],
-        [37.766483, -122.496319, "Emergency services are responding to a fire incident near the Japanese Tea Garden. Stay safe!"]
-      ];
+            regionSelector.addEventListener('change', async (e) => {
+                const region = e.target.value;
+                citySelector.innerHTML = '<option value="">Select City...</option>';
+                if (region && cityMap[region]) {
+                    cityMap[region].forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelector.appendChild(option);
+                    });
+                    updateMapView(map, null, region);
+                    await Promise.all([
+                        updateDisasterData(region),
+                        updateHistoricalData(region)
+                    ]);
+                }
+            });
 
-      pinDataStream.forEach(data => {
-        console.log("calling create marker "); // debug
-        createMarker(map, [data[0],data[1]], data[2], "FIRE");
-        setTimeout(() => {
-          marker.remove();
-        }, 12000 * Math.floor(Math.random() * (10 - 1 + 1) + 1));
-      });
+            citySelector.addEventListener('change', async (e) => {
+                const region = regionSelector.value;
+                const city = e.target.value;
+                if (city) {
+                    updateMapView(map, city, region);
+                    await Promise.all([
+                        updateDisasterData(region, city),
+                        updateHistoricalData(region, city)
+                    ]);
+                }
+            });
 
-      async function updateDisasterData(region, city = null) {
-        if (!region) return;
-        spinner.classList.remove('d-none');
-        disasterList.innerHTML = '';
+            // HARDCODED DATA JUST TO VISUALIZE PINS
+            const pinDataStream = [
+                [37.7709, -122.4569, "I see heavy smoke rising near Golden Gate Park. Stay safe everyone!"],
+                [37.773361, -122.460952, "Fire trucks are rushing towards the park area. Hope everyone is okay."],
+                [37.771172, -122.45506, "A fire has broken out near the Conservatory of Flowers. Avoid the area if possible."],
+                [37.773293, -122.469964, "Witnessed flames near a building on Fulton Street. Authorities are on the scene."],
+                [37.771393, -122.45091, "Golden Gate Park is being evacuated due to a fire. Please follow safety protocols."],
+                [37.767382, -122.477297, "The fire near Stow Lake seems to be spreading. Stay alert and avoid the area."],
+                [37.766483, -122.496319, "Emergency services are responding to a fire incident near the Japanese Tea Garden. Stay safe!"]
+            ];
 
-        try {
-          const data = await getRegionalDisasterHistory(region, city);
-          const lines = data.split('\n').filter(line => line.trim() !== '');
-          function getEmojiForLine(line) {
-            const lower = line.toLowerCase();
-            if (lower.includes('fire')) return '🔥';
-            if (lower.includes('flood') || lower.includes('water')) return '🌊';
-            if (lower.includes('earthquake')) return '🌍';
-            if (lower.includes('tornado')) return '🌪️';
-            if (lower.includes('hurricane')) return '🌀';
-            return '⚠️';
-          }
-          const formatted = '<ul>' + lines.map(line =>
-            `<li>${getEmojiForLine(line)} ${line}</li>`).join('') + '</ul>';
-          disasterList.innerHTML = `<div class="mt-3 scrollable-pane">${formatted}</div>`;
-        } catch (error) {
-          console.error('API Error:', error);
-          disasterList.innerHTML = `<div class="alert alert-danger">Error loading disaster data.</div>`;
-        } finally {
-          spinner.classList.add('d-none');
-        }
-      }
+            pinDataStream.forEach(data => {
+                console.log("calling create marker "); // debug
+                createMarker(map, [data[0], data[1]], data[2], "FIRE");
+                setTimeout(() => {
+                    marker.remove();
+                }, 12000 * Math.floor(Math.random() * (10 - 1 + 1) + 1));
+            });
 
-      async function updateHistoricalData(region, city = null) {
-        if (!region) return;
-        historyWindow.innerHTML = '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>';
-        try {
-          const data = await getHistoricalDisasters(region, city);
-          const events = data.split('\n').filter(line => line.trim());
-          
-          const formattedEvents = events.map(event => {
-            const [date, disaster, location, description] = event.split(':').map(s => s.trim());
-            return `
-              <li class="mb-3">
+            async function updateDisasterData(region, city = null) {
+                if (!region) return;
+                spinner.classList.remove('d-none');
+                disasterList.innerHTML = '';
+
+                try {
+                    const data = await getRegionalDisasterHistory(region, city);
+                    const lines = data.split('\n').filter(line => line.trim() !== '');
+                    function getEmojiForLine(line) {
+                        const lower = line.toLowerCase();
+                        if (lower.includes('fire')) return '🔥';
+                        if (lower.includes('flood') || lower.includes('water')) return '🌊';
+                        if (lower.includes('earthquake')) return '🌍';
+                        if (lower.includes('tornado')) return '🌪️';
+                        if (lower.includes('hurricane')) return '🌀';
+                        return '⚠️';
+                    }
+                    const formatted = '<ul>' + lines.map(line =>
+                        `<li>${getEmojiForLine(line)} ${line}</li>`).join('') + '</ul>';
+                    disasterList.innerHTML = `<div class="mt-3 scrollable-pane">${formatted}</div>`;
+                } catch (error) {
+                    console.error('API Error:', error);
+                    disasterList.innerHTML = `<div class="alert alert-danger">Error loading disaster data.</div>`;
+                } finally {
+                    spinner.classList.add('d-none');
+                }
+            }
+
+            async function updateHistoricalData(region, city = null) {
+                if (!region) return;
+                historyWindow.innerHTML = '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>';
+                try {
+                    const data = await getHistoricalDisasters(region, city);
+                    const events = data.split('\n').filter(line => line.trim());
+
+                    const formattedEvents = events.map(event => {
+                        const [date, disaster, location, description] = event.split(':').map(s => s.trim());
+                        return `
+                <li class="mb-3">
                 <strong class="text-danger">${date}:</strong>
                 <strong class="text-primary">${disaster}</strong>
                 <br>
                 <em class="text-muted">${location}</em>
                 <p class="mb-0 small">${description}</p>
-              </li>
+                </li>
             `;
-          }).join('');
+                    }).join('');
 
-          historyWindow.innerHTML = `
+                    historyWindow.innerHTML = `
             <ul class="list-unstyled">
-              ${formattedEvents}
+                ${formattedEvents}
             </ul>
-          `;
-        } catch (error) {
-          console.error('Historical data error:', error);
-          historyWindow.innerHTML = `<div class="alert alert-danger">Error loading historical data.</div>`;
-        }
-      }
-    });
-  </script>
+            `;
+                } catch (error) {
+                    console.error('Historical data error:', error);
+                    historyWindow.innerHTML = `<div class="alert alert-danger">Error loading historical data.</div>`;
+                }
+            }
+        });
+    </script>
 
 <%- include("footer") %>
-  
