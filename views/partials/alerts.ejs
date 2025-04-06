@@ -1,0 +1,106 @@
+<div id="alerts-resize" class="resizable-container">
+    <div id="alerts-container">
+        <style>
+            /* Make the font smaller for alert cards */
+            .alertCard {
+                font-size: 0.875rem; /* Smaller font size */
+                display: inline-block; /* Align cards horizontally */
+                vertical-align: top; /* Align cards to the top */
+                margin-right: 1rem; /* Add spacing between cards */
+                width: 400px; /* Set a fixed width for each card */
+                white-space: normal; /* Allow text to wrap within the card */
+                word-wrap: break-word;
+            }
+
+            .alertCard-header {
+                font-size: 1rem; /* Slightly smaller header font size */
+            }
+
+            .alertCard-body p {
+                font-size: 0.7rem; /* Smaller paragraph text */
+            }
+
+            .alertCard-body h5 {
+                font-size: 0.9rem; /* Smaller title font size */
+            }
+
+            .alertCard-text small {
+                font-size: 0.75rem; /* Smallest font for muted text */
+            }
+
+            #alerts-resize {
+                position: relative;
+                resize: both; /* Allow resizing in both directions */
+                overflow-x: auto; /* Enable horizontal scrolling */
+                overflow-y: hidden; /* Disable vertical scrolling */
+                white-space: nowrap; /* Prevent wrapping of child elements */
+                height: 400px; /* Set an initial height */
+            }
+        </style>
+
+        <script>
+            // Function to fetch alerts for a specific location
+            async function getAlerts(latitude, longitude) {
+                try {
+                    const response = await fetch(
+                        `https://api.weather.gov/alerts?point=${latitude},${longitude}`
+                    );
+                    if (!response.ok) {
+                        throw new Error(`Fetching alerts failed. Network response: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    displayAlerts(data.features); // Call a function to display alerts on the page
+                } catch (error) {
+                    console.error(`%c${error.message}`, "color: red");
+                }
+            }
+
+            // Function to display alerts on the page
+            function displayAlerts(alerts) {
+                const alertsContainer = document.getElementById("alerts-container");
+
+                if (alerts.length === 0) {
+                    alertsContainer.innerHTML = `
+                        <div class="alert alert-info text-center" role="alert">
+                            No active alerts in your area.
+                        </div>
+                    `;
+                    return;
+                }
+
+                alerts.forEach(alert => {
+                    const alertCard = document.createElement("div");
+                    alertCard.className = "alertCard"; // Horizontal alignment with inline-block
+
+                    alertCard.innerHTML = `
+                        <div class="border-danger mb-3">
+                            <div class="alertCard-header bg-danger text-white">
+                                ${alert.properties.event}
+                            </div>
+                            <div class="alertCard-body">
+                                <h5 class="alertCard-title">${alert.properties.headline || "Alert"}</h5>
+                                <p class="alertCard-text">${alert.properties.description}</p>
+                                <p class="alertCard-text"><strong>Instructions:</strong> ${alert.properties.instruction || "N/A"}</p>
+                                <p class="alertCard-text"><small class="text-muted">Affected Areas: ${alert.properties.areaDesc}</small></p>
+                            </div>
+                        </div>
+                    `;
+
+                    alertsContainer.appendChild(alertCard);
+                });
+            }
+
+            // Example: Get alerts for a specific location (replace with actual latitude and longitude)
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    getAlerts(latitude, longitude);
+                },
+                (error) => {
+                    console.error(`%cError getting location: ${error.message}`, "color: red");
+                }
+            );
+        </script>
+    </div>
+</div>

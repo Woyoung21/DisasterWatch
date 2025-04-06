@@ -282,9 +282,11 @@ function timedMarkerRemove(marker, expiration) {
         ]
     ];
 
+/*
 let t = 0;
 const interval = setInterval(() => {
   if (t >= polygonData.length) return clearInterval(interval);
   polygon.setLatLngs(polygonData[t]);
   t++;
 }, 4000);
+*/

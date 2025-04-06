@@ -1,14 +1,14 @@
-    <footer class="bg-light py-4">
-      <div class="container">
+    <footer class="py-4">
+      <div id="footer" class="container">
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-5">
             <h5>About Us</h5>
             <p>
               <a href="/aboutUs"><b>Learn more</b></a> about DisasterWatch and our
               commitment to providing users with instant information.
             </p>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <h5>Quick Links</h5>
             <ul class="list-unstyled">
               <li>
@@ -19,7 +19,7 @@
               </li>
             </ul>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-2">
             <h5>Follow Us</h5>
             <div class="d-flex">
               <a href="#" class="mr-2"><i class="fab fa-facebook-f"></i></a>
@@ -40,16 +40,23 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 1) On page load, read the saved theme from localStorage.
-        // 2) If present, apply that theme class to <body>.
         document.addEventListener('DOMContentLoaded', () => {
-            const storedTheme = localStorage.getItem('preferredTheme');
-            console.log('Current theme:', storedTheme); // Debug log
+          const navbar = document.getElementById('navbar');
+          const storedTheme = localStorage.getItem('preferredTheme') || 'theme-light';
 
-            if (storedTheme) {
-                document.body.classList.remove('theme-light', 'theme-dark', 'theme-colorblind');
-                document.body.classList.add(storedTheme);
-            }
+          if (storedTheme) {
+              document.body.classList.remove('theme-light', 'theme-dark', 'theme-colorblind');
+              document.body.classList.add(storedTheme);
+          }
+
+          // Apply the correct navbar class based on the theme
+          if (storedTheme === 'theme-dark') {
+            navbar.classList.remove('bg-light');
+            navbar.classList.add('bg-dark', 'navbar-dark'); // Use Bootstrap's dark classes
+          } else {
+            navbar.classList.remove('bg-dark', 'navbar-dark');
+            navbar.classList.add('bg-light', 'navbar-light'); // Use Bootstrap's light classes
+          }
         });
     </script>
   </body>

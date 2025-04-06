@@ -11,7 +11,7 @@
 
 	<style>
         .theme-light {
-            background-color: #ffffff;
+            background-color: #eeeeee;
             color: #000000;
         }
 
@@ -30,6 +30,28 @@
             background-color: #1e1e1e;
             border-bottom: 1px solid #666;
             color: #ffffff;
+        }
+
+        .theme-dark input,
+        .theme-dark select,
+        .theme-dark textarea {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            border: 1px solid #666;
+        }
+
+        .theme-dark input::placeholder,
+        .theme-dark textarea::placeholder {
+            color: #aaaaaa;
+        }
+
+        .theme-dark input:focus,
+        .theme-dark select:focus,
+        .theme-dark textarea:focus {
+            background-color: #2a2a2a;
+            border-color: #888;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
         }
 
         .theme-colorblind {
@@ -75,7 +97,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             margin-bottom: 1rem;
-            background-color: #f9f9f9;
+            background-color: #ffffff;
         }
 
         /* Theme-specific styles */
@@ -113,70 +135,25 @@
                 linear-gradient(135deg, transparent 50%, #999 50%),
                 linear-gradient(-135deg, transparent 50%, #999 50%);
         }
-	</style>
 
-    <style>
-        /*****************************************************
-        1) THEME CLASSES
-            (Copied from userSettings.html so they match exactly.)
-        ******************************************************/
-        /* LIGHT THEME */
-        .theme-light {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        /* DARK THEME */
-        .theme-dark {
-            background-color: #121212;
+        /* Header and Footer Styling */
+        .theme-dark .navbar .footer {
+            background-color: #343a40; /* Dark gray */
             color: #ffffff;
         }
 
-        .theme-dark .card {
-            background-color: #1e1e1e;
-            color: #ffffff;
-            border: 1px solid #666666;
-            box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05);
-        }
-
-        .theme-dark .card-header {
-            background-color: #1e1e1e;
-            border-bottom: 1px solid #666666;
+        .theme-dark .nav-link .footer a{
             color: #ffffff;
         }
 
-        /* COLOR-BLIND-FRIENDLY THEME */
-        .theme-colorblind {
-            background-color: #f5f5f5;
-            color: #0a0a0a;
-        }
-
-        .theme-colorblind .card {
-            background-color: inherit;
-            color: inherit;
-            border: 1px solid #666666;
-        }
-
-        .theme-colorblind .card-header {
-            background-color: inherit;
-            border-bottom: 1px solid #666666;
-            color: inherit;
-        }
-
-        /*****************************************************
-        2) PAGE-SPECIFIC STYLING 
-            (to resemble your wireframe)
-        ******************************************************/
-        .card-header {
-            font-weight: 600;
-            letter-spacing: 0.5px;
+        .theme-dark .navbar .nav-link:hover .footer a:hover{
+            color: #cccccc;
         }
 	</style>
-
 </head>
 
 <body class="theme-light"> <!-- This will be overridden by localStorage on load -->
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav id="navbar" class="navbar navbar-expand-lg bg-light">
 		<div class="container-fluid">
 			<img src="images/logo.png" alt="">
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -191,13 +168,13 @@
 						<a class="nav-link" href="/dashboard">Dashboard</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link active" href="/events">Events</a>
+						<a class="nav-link active" href="/events">Map</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/userSettings">User Settings</a>
+						<a class="nav-link" href="/userSettings">Settings</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link active" href="/aboutUs">About Us</a>
+						<a class="nav-link active" href="/aboutUs">About</a>
 					</li>
 				</ul>
 			</div>

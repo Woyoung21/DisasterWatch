@@ -1,7 +1,7 @@
 <%- include("header") %>
 
     <div class="container mt-5">
-        <h1 class="text-center mb-4">User Settings</h1>
+        <h1 class="text-center mb-4">Settings</h1>
         <div class="row">
             <!-- LEFT COLUMN -->
             <div class="col-md-6">
@@ -11,25 +11,17 @@
                     <div class="card-body">
                         <form>
                             <div class="mb-3">
-                                <label for="profileAvatar" class="form-label">Avatar</label>
-                                <input type="file" class="form-control" id="profileAvatar"
-                                    aria-describedby="avatarHelp" />
-                                <div id="avatarHelp" class="form-text">
-                                    Choose a profile picture (icon, photo, etc.).
-                                </div>
-                            </div>
-                            <div class="mb-3">
                                 <label for="profileName" class="form-label">Display Name</label>
                                 <input type="text" class="form-control" id="profileName"
-                                    placeholder="Enter your display name" />
+                                    placeholder="Enter display name" />
                             </div>
                             <div class="mb-3">
-                                <label for="profileEmail" class="form-label">Email</label>
+                                <label for="profileEmail" class="form-label">Email or Phone</label>
                                 <input type="email" class="form-control" id="profileEmail"
-                                    placeholder="Enter your email" />
+                                    placeholder="Enter email or phone" />
                             </div>
                             <button type="submit" class="btn btn-primary">
-                                Save Profile
+                                Save
                             </button>
                         </form>
                     </div>
@@ -48,30 +40,10 @@
                                     <option selected>Choose one...</option>
                                     <option value="email">Email Alerts</option>
                                     <option value="sms">SMS Alerts</option>
-                                    <option value="push">Push Notifications</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="geoRegion" class="form-label">Geographic Region</label>
-                                <select class="form-select" id="geoRegion">
-                                    <option selected>Choose your region...</option>
-                                    <option value="northamerica">North America</option>
-                                    <option value="southamerica">South America</option>
-                                    <option value="europe">Europe</option>
-                                    <option value="asia">Asia</option>
-                                    <option value="africa">Africa</option>
-                                    <option value="oceania">Oceania</option>
-                                </select>
-                            </div>
-                            <!-- Add the new city dropdown -->
-                            <div class="mb-3">
-                                <label for="city" class="form-label">City</label>
-                                <select class="form-select" id="city" disabled>
-                                    <option selected>First select a region...</option>
                                 </select>
                             </div>
                             <button type="submit" id="submit-notifications" class="btn btn-primary">
-                                Save Notifications
+                                Save
                             </button>
                         </form>
                     </div>
@@ -107,42 +79,52 @@
 
                 <!-- Alert Types (using color + text/icon) -->
                 <div class="card mb-4">
-                    <div class="card-header">Alert Types</div>
+                    <div class="card-header">Alert Filters</div>
                     <div class="card-body">
                         <form>
-                            <p>Select which alerts to receive. Each has a color-coded badge + text/icon:</p>
+                            <p>Select which alerts can populate the map</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="disasterAlerts" checked />
-                                <label class="form-check-label" for="disasterAlerts">
+                                <input class="form-check-input" type="checkbox" value="" id="userAlerts" checked />
+                                <label class="form-check-label" for="userAlerts">
                                     <span class="alert-badge badge-disaster">
                                         <span class="status-icon icon-triangle" aria-hidden="true"></span>
-                                        Disaster
+                                        User
                                     </span>
                                     Alerts
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="weatherAlerts" checked />
-                                <label class="form-check-label" for="weatherAlerts">
+                                <input class="form-check-input" type="checkbox" value="" id="noaatAlerts" checked />
+                                <label class="form-check-label" for="noaaAlerts">
                                     <span class="alert-badge badge-weather">
                                         <i class="bi bi-cloud-rain-fill" aria-hidden="true"></i>
-                                        Weather
+                                        NOAA
                                     </span>
                                     Alerts
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="generalUpdates" />
-                                <label class="form-check-label" for="generalUpdates">
-                                    <span class="alert-badge badge-general">
-                                        <i class="bi bi-bell-fill" aria-hidden="true"></i>
-                                        General
+                                <input class="form-check-input" type="checkbox" value="" id="calFiretAlerts" checked />
+                                <label class="form-check-label" for="calFireAlerts">
+                                    <span class="alert-badge badge-weather">
+                                        <i class="bi bi-cloud-rain-fill" aria-hidden="true"></i>
+                                        CalFire
                                     </span>
-                                    Updates
+                                    Alerts
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="usgsAlerts" checked />
+                                <label class="form-check-label" for="usgsAlerts">
+                                    <span class="alert-badge badge-weather">
+                                        <i class="bi bi-cloud-rain-fill" aria-hidden="true"></i>
+                                        USGS
+                                    </span>
+                                    Alerts
                                 </label>
                             </div>
                             <button type="submit" class="btn btn-primary mt-3">
-                                Save Alert Preferences
+                                Save
                             </button>
                         </form>
                     </div>
@@ -150,12 +132,51 @@
             </div>
             <!-- /RIGHT COLUMN -->
         </div>
-
-        <!-- Logout or Additional Account Actions -->
-        <div class="d-flex justify-content-end mt-4">
-            <button class="btn btn-danger">Log Out</button>
-        </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const navbar = document.getElementById('navbar');
+          const storedTheme = localStorage.getItem('preferredTheme') || 'theme-light';
+
+          if (storedTheme) {
+              document.body.classList.remove('theme-light', 'theme-dark', 'theme-colorblind');
+              document.body.classList.add(storedTheme);
+          }
+
+          // Apply the correct navbar class based on the theme
+          if (storedTheme === 'theme-dark') {
+            navbar.classList.remove('bg-light');
+            navbar.classList.add('bg-dark', 'navbar-dark'); // Use Bootstrap's dark classes
+          } else {
+            navbar.classList.remove('bg-dark', 'navbar-dark');
+            navbar.classList.add('bg-light', 'navbar-light'); // Use Bootstrap's light classes
+          }
+
+          // Listen for theme changes
+          document.getElementById('themeForm').addEventListener('change', (e) => {
+            if (e.target.type === 'radio') {
+              const newTheme = e.target.value;
+
+              if (newTheme) {
+                  document.body.classList.remove('theme-light', 'theme-dark', 'theme-colorblind');
+                  document.body.classList.add(newTheme);
+              }
+
+              // Update navbar classes dynamically
+              if (newTheme === 'theme-dark') {
+                navbar.classList.remove('bg-light', 'navbar-light');
+                navbar.classList.add('bg-dark', 'navbar-dark');
+              } else {
+                navbar.classList.remove('bg-dark', 'navbar-dark');
+                navbar.classList.add('bg-light', 'navbar-light');
+              }
+
+              // Save the theme to localStorage
+              localStorage.setItem('preferredTheme', newTheme);
+            }
+          });
+        });
+    </script>
 
     <script>
         // THEME TOGGLE LOGIC

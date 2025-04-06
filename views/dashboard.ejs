@@ -3,49 +3,48 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <main class="container mt-5" role="main">
-        <h1 class="mb-4 text-center">Dashboard</h1>
+    <main class="container-fluid mt-5" role="main">
+        <h1 class="mb-5 text-center">Dashboard</h1>
 
         <!-- Top Section: Live Feed and Map -->
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <!-- Live Feed -->
                 <div class="card mb-4">
                     <div class="card-header">Live Feed</div>
                     <div class="card-body">
-                        <!-- <div class="resizable-container" id="liveFeed">
-                            <p>Real-time disaster and weather alerts will be shown here.</p>
-                            <div class="live-window" aria-live="polite">
-                                <ul class="list-unstyled">
-                                    <li><strong>2025-04-04:</strong> User reported event 1, location, message</li>
-                                    <li><strong>2025-04-04:</strong> User reported event 2, location, message</li>
-                                    <li><strong>2025-04-04:</strong> User reported event 3, location, message</li>
-                                    <li><strong>2025-04-04:</strong> Govt reported event 4, location, message</li>
-                                    <li><strong>2025-04-04:</strong> Govt agency reported event 5, location, message
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> -->
                         <%- include("./partials/liveFeed") %>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <!-- Map Visualization -->
                 <div class="card mb-4">
                     <div class="card-header">Map Visualization</div>
                     <div class="card-body">
-                        <!-- <div id="map" style="height: 400px; width: 100%;"></div> -->
                          <%- include("./partials/map") %>
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-4">
+                <!-- Map Visualization -->
+                <div class="card mb-4">
+                    <div class="card-header">Weather</div>
+                    <div class="card-body">
+                        <div class="resizable-container" id="weatherWindow">
+                         <%- include("./partials/weather") %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- Bottom Section: Historical Disasters and Regional Disaster Susceptibility -->
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <!-- Historical Disasters -->
                 <div class="card mb-4">
                     <div class="card-header">Historical Disasters</div>
@@ -57,20 +56,18 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <!-- Regional Disaster Susceptibility -->
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <span>Regional Disaster Susceptibility</span>
                         <div class="d-flex align-items-center gap-2">
-                            <label for="regionSelector" class="visually-hidden">Select Region</label>
                             <select id="regionSelector" class="form-select form-select-sm" aria-label="Region Selector">
                                 <option value="">Select Region...</option>
                                 <option value="West Coast">West Coast</option>
                                 <option value="Central US">Central US</option>
                                 <option value="East Coast">East Coast</option>
                             </select>
-                            <label for="citySelector" class="visually-hidden">Select City</label>
                             <select id="citySelector" class="form-select form-select-sm" aria-label="City Selector">
                                 <option value="">Select City...</option>
                             </select>
@@ -85,6 +82,17 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-4">
+                <!-- Historical Disasters -->
+                <div class="card mb-4">
+                    <div class="card-header">Current Alerts</div>
+                    <div class="card-body">
+                        <%- include("./partials/alerts") %>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </main>
@@ -117,8 +125,8 @@
             };
 
             // Initialize map using the imported function
-            const map = initializeMap('map');
-            const fireReigon = initalizeFireReigon();
+            //const map = initializeMap('map');
+            // const fireReigon = initalizeFireReigon();
 
             // Initialize with user's location
             try {
@@ -206,10 +214,10 @@
 
             pinDataStream.forEach(data => {
                 console.log("calling create marker "); // debug
-                createMarker(map, [data[0], data[1]], data[2], "FIRE");
+                let marker = createMarker(map, [data[0], data[1]], data[2], "FIRE");
                 setTimeout(() => {
                     marker.remove();
-                }, 12000 * Math.floor(Math.random() * (10 - 1 + 1) + 1));
+                }, 120 * Math.floor(Math.random() * (10 - 1 + 1) + 1));
             });
 
             async function updateDisasterData(region, city = null) {
@@ -242,7 +250,7 @@
 
             async function updateHistoricalData(region, city = null) {
                 if (!region) return;
-                historyWindow.innerHTML = '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>';
+                historyWindow.innerHTML = '<div class="spinner-border" role="status"><span class="visually-hidden"></span></div>';
                 try {
                     const data = await getHistoricalDisasters(region, city);
                     const events = data.split('\n').filter(line => line.trim());
