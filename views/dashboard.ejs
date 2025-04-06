@@ -212,13 +212,13 @@
                 [37.766483, -122.496319, "Emergency services are responding to a fire incident near the Japanese Tea Garden. Stay safe!"]
             ];
 
-            pinDataStream.forEach(data => {
-                console.log("calling create marker "); // debug
-                let marker = createMarker(map, [data[0], data[1]], data[2], "FIRE");
-                setTimeout(() => {
-                    marker.remove();
-                }, 120 * Math.floor(Math.random() * (10 - 1 + 1) + 1));
-            });
+            // pinDataStream.forEach(data => {
+            //     console.log("calling create marker "); // debug
+            //     let marker = createMarker(map, [data[0], data[1]], data[2], "FIRE");
+            //     setTimeout(() => {
+            //         marker.remove();
+            //     }, 120 * Math.floor(Math.random() * (10 - 1 + 1) + 1));
+            // });
 
             async function updateDisasterData(region, city = null) {
                 if (!region) return;
