@@ -17,6 +17,9 @@
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
   crossorigin=""
 ></script>
+<script src="/eventModels.js"></script>
+<script src="/eventListener.js"></script>
+<script src="/mapFunctions.js"></script>
 
 <script>
   // Directly initialize the map since this partial is rendered at the end
@@ -30,8 +33,103 @@
   }).addTo(map);
 
   // Add a marker to San Francisco
-  //   L.marker([37.7749, -122.4194])
-  // .addTo(map)
-  // .bindPopup("San Francisco")
-  // .openPopup();
+    L.marker([37.7749, -122.4194])
+  .addTo(map)
+  .bindPopup("San Francisco")
+  .openPopup();
+  // Additional markers or features can be added here if needed.
+  const events = <%- JSON.stringify(events) %>;
+  const eventsHash = <%- JSON.stringify(eventsHash) %>;
+  // This shoud be populated from the route handler
+
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const eventService = new EventService();
+
+    // Set up event handlers
+    eventService.setHandler("connect", () => {
+      updateStatus("connected", "Connected to WebSocket server");
+    });
+
+    eventService.setHandler("event", (data) => {
+      addLogEntry("event", `Event ${data.operation}:`, data.record);
+
+      if (data.operation === "INSERT") {
+        const event = data.record;
+        eventsHash[event.id] = event;
+        events.push(event);
+
+        // var map = L.map("map");
+
+        // L.marker([37.7749, -122.4194])
+        //     .addTo(map)
+        //     .bindPopup("San Francisco")
+        //     .openPopup();
+
+
+        createMarker(map,[event.lat, event.long], `Event ID: ${event.id} <br>Authority: ${event.authority}<br>Severity: ${event.severity}`)
+
+
+      } else if (data.operation === "UPDATE") {
+        const event = eventsHash[data.record.id];
+
+        if (event) {
+          event.data = data.record.data;
+          event.authority = data.record.authority;
+          event.severity = data.record.severity;
+          event.time_created = data.record.time_created;
+          event.lat = data.record.lat;
+          event.long = data.record.long;
+        } else {
+          addLogEntry("error", `Event ${data.record.id} not found`);
+        }
+
+      } else if (data.operation === "DELETE") {
+        const event = eventsHash[data.record.id];
+        if (event) {
+          delete eventsHash[data.record.id];
+          const index = events.indexOf(event);
+          if (index > -1) {
+            events.splice(index, 1);
+          }
+        } else {
+          addLogEntry("error", `Event ${data.record.id} not found`);
+        }
+      } else if (data.operation === "TEST") {
+        //
+      }
+    });
+
+    eventService.setHandler("error", (error) => {
+      updateStatus("error", `Error: ${error.message || "Unknown error"}`);
+    });
+
+    eventService.setHandler("message", (event) => {
+
+      if (typeof event === "object" && event.type) {
+        addLogEntry(event.type, event.message, event.data);
+      } else {
+        addLogEntry("raw", "Raw message:", event);
+      }
+    });
+
+    eventService.setHandler("close", () => {
+      updateStatus("connecting", "Disconnected. Attempting to reconnect...");
+    });
+
+    // Clean up when leaving the page
+    window.addEventListener("beforeunload", () => {
+      eventService.close();
+    });
+
+
+  });
+
+  function addLogEntry(type, message, data) {
+        console.log(`[Log] ${type}: ${message}`, data || "");
+  }
+
+  function updateStatus(state, message) {
+        console.log(`[Status] ${state}: ${message}`);
+      }
 </script>
