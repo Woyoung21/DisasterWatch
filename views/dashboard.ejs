@@ -163,6 +163,8 @@
                     await Promise.all([
                         updateDisasterData(userRegion, nearestCity),
                         updateHistoricalData(userRegion, nearestCity)
+                        //update weather forecast -------
+                        //update .gov API alerts -------
                     ]);
                 }
             } catch (error) {
