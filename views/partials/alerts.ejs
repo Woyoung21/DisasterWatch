@@ -1,40 +1,49 @@
 <div id="alerts-resize" class="resizable-container">
     <div id="alerts-container">
         <style>
-            /* Make the font smaller for alert cards */
             .alertCard {
-                font-size: 0.875rem; /* Smaller font size */
-                display: inline-block; /* Align cards horizontally */
-                vertical-align: top; /* Align cards to the top */
-                margin-right: 1rem; /* Add spacing between cards */
-                width: 400px; /* Set a fixed width for each card */
-                white-space: normal; /* Allow text to wrap within the card */
+                font-size: 0.875rem;
+                display: inline-block;
+                vertical-align: top;
+                margin-right: 1rem;
+                width: 400px;
+                white-space: normal;
                 word-wrap: break-word;
             }
 
             .alertCard-header {
-                font-size: 1rem; /* Slightly smaller header font size */
+                font-size: 1rem;
+                padding: 0.75rem;
+                background-color: #dc3545;
+                color: white;
+                border-radius: 0.25rem 0.25rem 0 0;
+            }
+
+            .alertCard-body {
+                padding: 1rem;
             }
 
             .alertCard-body p {
-                font-size: 0.7rem; /* Smaller paragraph text */
+                font-size: 0.7rem;
+                margin-bottom: 0.5rem;
             }
 
             .alertCard-body h5 {
-                font-size: 0.9rem; /* Smaller title font size */
+                font-size: 0.9rem;
             }
 
             .alertCard-text small {
-                font-size: 0.75rem; /* Smallest font for muted text */
+                font-size: 0.75rem;
             }
 
             #alerts-resize {
                 position: relative;
-                resize: both; /* Allow resizing in both directions */
-                overflow-x: auto; /* Enable horizontal scrolling */
-                overflow-y: hidden; /* Disable vertical scrolling */
-                white-space: nowrap; /* Prevent wrapping of child elements */
-                height: 400px; /* Set an initial height */
+                resize: both;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                height: 400px;
+                padding: 10px;
             }
         </style>
 
