@@ -59,6 +59,9 @@
             function displayAlerts(alerts) {
                 const alertsContainer = document.getElementById("alerts-container");
 
+                // Clear existing alerts
+                alertsContainer.innerHTML = '';
+
                 if (alerts.length === 0) {
                     alertsContainer.innerHTML = `
                         <div class="alert alert-info text-center" role="alert">
@@ -88,19 +91,70 @@
 
                     alertsContainer.appendChild(alertCard);
                 });
+
+                // Dispatch custom event to indicate alerts have been updated
+                const event = new Event('alertsUpdated');
+                document.dispatchEvent(event);
             }
 
             // Example: Get alerts for a specific location (replace with actual latitude and longitude)
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-                    getAlerts(latitude, longitude);
-                },
-                (error) => {
-                    console.error(`%cError getting location: ${error.message}`, "color: red");
+            function updateAlerts() {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        getAlerts(latitude, longitude);
+                    },
+                    (error) => {
+                        console.error(`%cError getting location: ${error.message}`, "color: red");
+                    }
+                );
+            }
+
+            // Call updateAlerts initially and then every 5 minutes
+            updateAlerts();
+            setInterval(updateAlerts, 300000); // 300000 milliseconds = 5 minutes
+
+            async function updateCurrentAlerts() {
+                try {
+                    // Get user's current location
+                    const position = await new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition(resolve, reject);
+                    });
+
+                    // Fetch alerts using the location
+                    await getAlerts(position.coords.latitude, position.coords.longitude);
+
+                    console.log('Alerts updated successfully');
+                } catch (error) {
+                    console.error('Error updating alerts:', error);
                 }
-            );
+            }
+
+            // Initial update
+            updateCurrentAlerts();
+
+            // Update alerts every 5 minutes (300000 milliseconds)
+            setInterval(updateCurrentAlerts, 300000);
+
+            // Add a visual indicator for last update time
+            function updateLastRefreshTime() {
+                const timestamp = new Date().toLocaleTimeString();
+                const statusElement = document.createElement('div');
+                statusElement.className = 'text-muted small mt-2';
+                statusElement.innerHTML = `Last updated: ${timestamp}`;
+                
+                // Remove previous timestamp if it exists
+                const previousStatus = document.querySelector('.text-muted.small.mt-2');
+                if (previousStatus) {
+                    previousStatus.remove();
+                }
+                
+                document.getElementById('alerts-container').appendChild(statusElement);
+            }
+
+            // Update timestamp when alerts are refreshed
+            document.addEventListener('alertsUpdated', updateLastRefreshTime);
         </script>
     </div>
 </div>
